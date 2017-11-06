@@ -2,17 +2,31 @@
 <html>
      <head>
         <title>Home</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    </head>
+        <jsp:include page="includes/references.jsp" />
+     </head>
 
     <body>
-        <jsp:include page="includes/header.jsp" />
+        <jsp:include page="includes/nav.jsp" />
         
         <div class="container">
-            <h1>Page Example</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus finibus bibendum porta. Sed accumsan, quam ac volutpat consequat, nisi arcu tempor diam, ut ultrices sapien metus elementum est. Fusce mollis tortor velit. Aenean ante elit, finibus at orci nec, mollis varius dui. Quisque id diam sem. Suspendisse potenti. Nullam convallis volutpat venenatis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat lectus et molestie consequat. In hac habitasse platea dictumst. Duis eu nunc at sem elementum bibendum sed ut dui. Nunc hendrerit suscipit elit ut tincidunt.</p>
-            <p>Phasellus ac vestibulum risus. Vestibulum volutpat cursus risus. In euismod dui lacinia dui feugiat, vel lobortis tellus lobortis. Etiam ex enim, bibendum at nunc sit amet, mattis auctor ipsum. Aenean nec ullamcorper quam. Praesent posuere interdum feugiat. Nam pellentesque ex lacus, vel facilisis quam lacinia pulvinar. Proin tellus mi, euismod id neque id, fringilla aliquam nisi. Donec sodales aliquet viverra. Nullam aliquet vulputate blandit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse mi metus, cursus at nunc sed, tincidunt feugiat erat. Pellentesque urna tellus, tristique ut lobortis vel, porta vulputate nunc. Donec at porta massa.</p>
-        </div>
-        
+            <h1>Welcome to XYZ Drivers Association</h1>
+            <p>
+                XYZ Drivers Association decides to set up a solidarity fund to 
+                subsidise members for minor accidents so that the members can 
+                avoid making claims to Insurance companies. The association 
+                provides a certain amount of subsidy once a claim is made, and 
+                sums up all claims made to the end of each year.
+            </p>
+            <p>
+                The members are expected to pay annual membership fee and the 
+                allocated portion of total annual charge from lumpsum of claims.
+                The charges are allocated at the end of each year.
+            </p>
+            <p>
+                Members will be able to make claims after 6 months of their 
+                membership, be allowed to make maximum 2 claims per year, and 
+                will not be supported if  these circumstances are not met. 
+            </p>
+        </div>        
     </body>
 </html>
