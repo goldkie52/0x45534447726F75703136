@@ -78,10 +78,10 @@ public class User implements Serializable {
             return false;
         }
         final User user = (User)o;
-        if (this.id != user.id) {
+        if (!this.id.equals(user.id)) {
             return false;
         }
-        if (this.password != user.password) {
+        if (!this.password.equals(user.password)) {
             return false;
         }
         if (this.status != user.status) {
