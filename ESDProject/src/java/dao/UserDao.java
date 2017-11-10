@@ -5,13 +5,14 @@ import model.User;
 /**
  * Provides the interface for accessing user data.
  * @author Matthew Carpenter 14012396
+ * @author Rachel Bailey 13006455
  */
 public interface UserDao {
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
 
     /**
-     * Adds a new user to the system, returning a reference to their details.
+     * Adds a new user to the system.
      * @param user the user to add to the system
      * @return true if the user was added; otherwise false
      */
