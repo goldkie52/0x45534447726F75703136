@@ -15,5 +15,5 @@ public interface PaymentDao {
     
     public Payment[] getAllPayments();
     
-    public boolean updatePayemnt(Payment payment);
+    public boolean updatePayment(Payment payment);
 }

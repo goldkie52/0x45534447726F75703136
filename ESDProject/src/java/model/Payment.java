@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 /**
  * The Payment class is the value object that represents a claim in the database.
@@ -72,6 +73,53 @@ public class Payment implements Serializable {
         this.time = time;
     }
     
+    
+    
     // </editor-fold>
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + this.id;
+        hash = 67 * hash + Objects.hashCode(this.memId);
+        hash = 67 * hash + Objects.hashCode(this.typeOfPayment);
+        hash = 67 * hash + Float.floatToIntBits(this.amount);
+        hash = 67 * hash + Objects.hashCode(this.date);
+        hash = 67 * hash + Objects.hashCode(this.time);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Payment other = (Payment) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.amount) != Float.floatToIntBits(other.amount)) {
+            return false;
+        }
+        if (!Objects.equals(this.memId, other.memId)) {
+            return false;
+        }
+        if (!Objects.equals(this.typeOfPayment, other.typeOfPayment)) {
+            return false;
+        }
+        if (!Objects.equals(this.date, other.date)) {
+            return false;
+        }
+        if (!Objects.equals(this.time, other.time)) {
+            return false;
+        }
+        return true;
+    }
     
 }

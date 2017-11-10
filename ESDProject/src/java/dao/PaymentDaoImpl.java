@@ -69,14 +69,14 @@ public class PaymentDaoImpl implements PaymentDao {
     public Payment[] getAllPayments() {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM PAYMENTS");
                 ResultSet resultSet = prepStatement.executeQuery()) {
-            ArrayList paymentList = new ArrayList();
+            ArrayList<Payment> payments = new ArrayList<>();
             while (resultSet.next()) {                
-                paymentList.add(CreatePayment(resultSet.getInt("id"), resultSet.getString("mem_id"),
+                payments.add(CreatePayment(resultSet.getInt("id"), resultSet.getString("mem_id"),
                             resultSet.getString("type_of_payment").trim(), resultSet.getFloat("amount"),
                             resultSet.getDate("date").toLocalDate(), resultSet.getTime("time").toLocalTime()));
             }
             
-            return (Payment[]) paymentList.toArray();
+            return payments.toArray(new Payment[0]);
         } catch (SQLException ex) {
 
         }
@@ -85,8 +85,19 @@ public class PaymentDaoImpl implements PaymentDao {
     }
 
     @Override
-    public boolean updatePayemnt(Payment payment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean updatePayment(Payment payment) {
+        try (PreparedStatement prepStatement = connection.prepareStatement("UPDATE PAYMENTS SET \"mem_id\" = ?, \"type_of_payment\" = ?, \"amount\" = ?, \"date\" = ?, \"time\" = ? WHERE \"id\" = ?")) {
+            prepStatement.setString(1, payment.getMemId());
+            prepStatement.setString(2, payment.getTypeOfPayment());
+            prepStatement.setFloat(3, payment.getAmount());
+            prepStatement.setDate(4, Date.valueOf(payment.getDate()));
+            prepStatement.setTime(5, Time.valueOf(payment.getTime()));
+            prepStatement.setInt(6, payment.getId());
+            return prepStatement.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     private Payment CreatePayment(int id, String memId, String typeOfPayment, float amount, LocalDate date, LocalTime time) {
@@ -94,7 +105,7 @@ public class PaymentDaoImpl implements PaymentDao {
 
         payment.setId(id);
         payment.setMemId(memId);
-        payment.setTypeOfPayment(typeOfPayment.trim());
+        payment.setTypeOfPayment(typeOfPayment.toUpperCase().trim());
         payment.setAmount(amount);
         payment.setDate(date);
         payment.setTime(time);
