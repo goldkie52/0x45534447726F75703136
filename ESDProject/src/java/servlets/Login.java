@@ -1,7 +1,5 @@
 package servlets;
 
-import dao.UserDao;
-import dao.UserDaoImpl;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.User;
+import model.Authenticator;
+import model.LoginResult;
 
 /**
  * This servlet handles validating the user and setting loggedInUser
@@ -48,30 +47,21 @@ public class Login extends HttpServlet {
             // This connection could later be put into the site config
             connection = DriverManager.getConnection("jdbc:derby://localhost:1527/XYZ_Assoc");
             
-            // Set up the User DAO
-            UserDao userDao = new UserDaoImpl(connection);
+            Authenticator authenticator = new Authenticator(connection);
+            LoginResult result = authenticator.authenticate(username, password);
             
-            // Attempt to get a user with the inputted ID from the DAO
-            User user = userDao.getUser(username);
-            
-            // Check if the user exists and whether the password was correct
-            if (user != null && user.getPassword().equals(password)) {
-                //The username and password was correct
-                
+            if (result.isValid()) {
                 //Set the user variable in the session
-                request.getSession().setAttribute("loggedInUser", user);
+                request.getSession().setAttribute("loggedInUser", result.getUser());
 
                 //Return back to the home page
                 response.sendRedirect("index.jsp");
             } else {
-                //The username and/or password was incorrect
-                
                 //Invalidate their session
                 request.getSession().invalidate();
 
                 //Return back to the page with an error message
                 response.sendRedirect("/user/login.jsp?invalid=true");
-                
             }
             
             connection.close();
