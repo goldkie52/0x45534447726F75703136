@@ -18,6 +18,9 @@ window.onload = function () {
             success: function (result) {
                 // Populate address picker
                 $("#available-addresses").empty();
+                
+                //Remove error message
+                $("#alertPostcode").remove();
 
 
                 for (i = 0; i < result.addresses.length; i++) {
@@ -32,12 +35,17 @@ window.onload = function () {
             error: function (result) {
                 //Hide the address picker
                 $("#address-lookup").hide();
+                
+                //Remove items in the select
+                $("#available-addresses").empty();
 
                 // Set the textbox to be empty
                 $("input#postcode").val("");
-
+                
                 // Display an invalid postcode message
-                alert("Invalid postcode");
+                
+                $("div#alerts").append("<div class='alert alert-danger' id='alertPostcode' role='alert'>Please enter a valid postcode.</div>")
+                //alert("Invalid postcode");
             }
         })
     });
