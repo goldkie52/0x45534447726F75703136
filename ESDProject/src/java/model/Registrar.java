@@ -26,6 +26,10 @@ public class Registrar {
     
     // <editor-fold defaultstate="collapsed" desc="Constructor">
     
+    /**
+     * Initialises a new instance of the Registrar class.
+     * @param connection the connection to the database
+     */
     public Registrar(Connection connection) {
         this.connection = connection;
     }
@@ -34,6 +38,14 @@ public class Registrar {
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
+    /**
+     * Registers a new user to the system with the provided details.
+     * @param firstName the first name of the user
+     * @param lastName the last name of the user
+     * @param dob the date of birth of the user
+     * @param address the address of the user
+     * @return a SignupResult holding the result of the registration
+     */
     public SignupResult register(String firstName, String lastName, String dob, String address) {
         SignupResult result = new SignupResult();
         String fullname = firstName + " " + lastName;
@@ -74,16 +86,32 @@ public class Registrar {
         return result;
     }
     
+    /**
+     * Generates a username from a given full name
+     * @param first the first name
+     * @param last the last name
+     * @return the generated username
+     */
     private String generateUsernameFromFirstAndLast(String first, String last) {
         return first.toLowerCase().charAt(0) + "-" + last.toLowerCase();
     }
     
+    /**
+     * Returns the current date in the format dd-mm-yyyy
+     * @return the current date in the format dd-mm-yyyy
+     */
     private String getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date currentDate = new Date();
         return dateFormat.format(currentDate);
     }
     
+    /**
+     * Validates that the provided string is a date in the given format
+     * @param date the String to parse the date from
+     * @param dateFormat a String representing the expected format
+     * @return a Date object with the value parsed from the string; or null if the value was not valid
+     */
     private Date validateDate(String date, String dateFormat) {
         SimpleDateFormat dateValidator = new SimpleDateFormat(dateFormat);
         dateValidator.setLenient(false);
@@ -94,12 +122,23 @@ public class Registrar {
         }
     }
     
+    /**
+     * Generates a password from the given date
+     * @param date the Date object to generate the password from
+     * @return the password that the date produces
+     */
     private String generatePasswordFromDate(Date date) {
         String passwordFormatString = "ddMMyy";
         SimpleDateFormat datePasswordFormatter = new SimpleDateFormat(passwordFormatString);
         return datePasswordFormatter.format(date);
     }
     
+    /**
+     * Parses a LocalDate object from the provided string and date format
+     * @param date the String object to parse the value from
+     * @param dateFormat a String representing the expected format
+     * @return a LocalDate object with the value parsed from the String
+     */
     private LocalDate parseLocalDate(String date, String dateFormat) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat);
         return LocalDate.parse(date, dateTimeFormatter);
