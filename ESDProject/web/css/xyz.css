@@ -17,3 +17,12 @@
 .overflow-scroll{
     overflow: scroll;
 }
+
+.xyz-form-width, .xyz-form-width .form-group, .xyz-form-width .row{
+    max-width: 300px;
+    width: 300px;
+}
+
+.input-group-addon i{
+    margin: 0 auto;
+}
