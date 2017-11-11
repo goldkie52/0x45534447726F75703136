@@ -1,0 +1,19 @@
+/*
+    Document   : Custom CSS for the site
+    Author     : James Broadberry 14007903
+ */
+.input-group-addon{
+    width: 40px;
+}
+
+.width-100{
+    width: 100%;
+}
+
+.initial-hidden{
+    display: none;
+}
+
+.overflow-scroll{
+    overflow: scroll;
+}
