@@ -2,10 +2,10 @@ window.onload = function () {
     $("#postcode-lookup").click(function () {
         var postcodeApi = "https://api.getAddress.io/find/";
         var postcode = $("input#postcode").val();
-        var apiKey = "NNCd8ZNAlUOZ-4SJZ1lhxw11042"; // Group (for demo)
+        //var apiKey = "NNCd8ZNAlUOZ-4SJZ1lhxw11042"; // Group (for demo)
         //var apiKey = "eV4ppm_xFkCVVPM8VC9zXw11035"; //James
         //var apiKey = "6QpzXEzcP0yMHTJJwc6l0g11037"; //James 2
-        //var apiKey = ""; //Matt
+        var apiKey = "icuttQCAnUC-qeo_UwJEPQ11046"; //Matt
         //var apiKey = ""; //Kieran
         //var apiKey = ""; //Rach
         //var apiKey = ""; //Charlotte
