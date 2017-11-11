@@ -34,7 +34,7 @@ import model.UserStatus;
  *
  * @author james
  */
-public class signup extends HttpServlet {
+public class Signup extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -114,7 +114,7 @@ public class signup extends HttpServlet {
 
             connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
