@@ -18,20 +18,26 @@ import model.User;
  * This servlet handles validating the user and setting loggedInUser
  * session variable.
  * @author James Broadberry 14007903
+ * @author Matthew Carpenter 14012396
  */
 public class Login extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Variables">
+    
+    private static Connection connection;
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static Connection connection;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
@@ -113,4 +119,6 @@ public class Login extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    // </editor-fold>
+    
 }

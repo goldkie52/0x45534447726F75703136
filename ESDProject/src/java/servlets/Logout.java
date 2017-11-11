@@ -9,13 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * This servlet logs the current user out.
  * @author James Broadberry 14007903
+ * @author Matthew Carpenter 14012396
  */
 public class Logout extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -71,4 +73,6 @@ public class Logout extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    // </editor-fold>
+    
 }
