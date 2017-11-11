@@ -18,7 +18,7 @@
     overflow: scroll;
 }
 
-.xyz-form-width, .xyz-form-width .form-group, .xyz-form-width .row{
+.xyz-form-width, .xyz-form-width .form-group, .xyz-form-width .row, .xyz-form-width div.alert{
     max-width: 300px;
     width: 300px;
 }
