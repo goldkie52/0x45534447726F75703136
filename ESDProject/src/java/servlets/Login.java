@@ -1,21 +1,37 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Authenticator;
+import model.LoginResult;
 
 /**
- * This servlet logs the current user out.
+ * This servlet handles validating the user and setting loggedInUser
+ * session variable.
  * @author James Broadberry 14007903
+ * @author Matthew Carpenter 14012396
  */
-public class logout extends HttpServlet {
+public class Login extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Variables">
+    
+    private static Connection connection;
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -23,13 +39,35 @@ public class logout extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        //Invalidate session
-        request.getSession().invalidate();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         
-        //Redirect to home page
-        response.sendRedirect("/index.jsp");
+        try {
+            // Create the connection to the DB
+            // This connection could later be put into the site config
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/XYZ_Assoc");
+            
+            Authenticator authenticator = new Authenticator(connection);
+            LoginResult result = authenticator.authenticate(username, password);
+            
+            if (result.isValid()) {
+                //Set the user variable in the session
+                request.getSession().setAttribute("loggedInUser", result.getUser());
 
+                //Return back to the home page
+                response.sendRedirect("index.jsp");
+            } else {
+                //Invalidate their session
+                request.getSession().invalidate();
+
+                //Return back to the page with an error message
+                response.sendRedirect("/user/login.jsp?invalid=true");
+            }
+            
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -71,4 +109,6 @@ public class logout extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    // </editor-fold>
+    
 }

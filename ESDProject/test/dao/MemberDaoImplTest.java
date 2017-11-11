@@ -1,8 +1,6 @@
 package dao;
 
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,24 +9,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Member;
 import model.MemberStatus;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import test.BaseDbTestClass;
 
 /**
  * Tests the MemberDaoImpl class.
  * @author Rachel Bailey 13006455
+ * @author Matthew Carpenter 14012396
  */
-public class MemberDaoImplTest {
-    
-    // <editor-fold defaultstate="collapsed" desc="Variables">
-    
-    private static Connection connection;
-    
-    // </editor-fold>
+public class MemberDaoImplTest extends BaseDbTestClass {
     
     // <editor-fold defaultstate="collapsed" desc="Constructor">
     
@@ -38,46 +28,6 @@ public class MemberDaoImplTest {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
-    
-    // <editor-fold defaultstate="collapsed" desc="Test Lifecycle">
-    
-    @BeforeClass
-    public static void setUpClass() {
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MemberDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/XYZ_Assoc_Test");
-        } catch (SQLException ex) {
-            Logger.getLogger(MemberDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-        try {
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(MemberDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Before
-    public void setUp() {
-        try (PreparedStatement prepStatement = connection.prepareStatement("DELETE FROM MEMBERS")) {
-            prepStatement.execute();
-        } catch (SQLException ex) {
-            Logger.getLogger(MemberDaoImplTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @After
-    public void tearDown() {
-    }
-    
-    // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Tests">
 
