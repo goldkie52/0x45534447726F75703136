@@ -75,7 +75,7 @@ public class Registrar {
     }
     
     private String generateUsernameFromFirstAndLast(String first, String last) {
-        return first.charAt(0) + "-" + last;
+        return first.toLowerCase().charAt(0) + "-" + last.toLowerCase();
     }
     
     private String getCurrentDate() {
