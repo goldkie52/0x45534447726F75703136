@@ -38,7 +38,6 @@ public class Registrar {
         SignupResult result = new SignupResult();
         String fullname = firstName + " " + lastName;
         String username = generateUsernameFromFirstAndLast(firstName, lastName);
-        String generatedPassword = "";
         String registedDate = getCurrentDate();
         
         Date dobDate = validateDate(dob, "dd-MM-yyyy");
@@ -50,6 +49,8 @@ public class Registrar {
         if (!result.isRequestValid()) {
             return result;
         }
+        
+        String generatedPassword = generatePasswordFromDate(dobDate);
         
         User userToAdd = new User();
         userToAdd.setId(username);
@@ -83,7 +84,7 @@ public class Registrar {
         return dateFormat.format(currentDate);
     }
     
-    protected Date validateDate(String date, String dateFormat) {
+    private Date validateDate(String date, String dateFormat) {
         SimpleDateFormat dateValidator = new SimpleDateFormat(dateFormat);
         dateValidator.setLenient(false);
         try {
