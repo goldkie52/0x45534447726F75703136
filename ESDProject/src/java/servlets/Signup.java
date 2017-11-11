@@ -5,15 +5,12 @@ import dao.MemberDaoImpl;
 import dao.UserDao;
 import dao.UserDaoImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -22,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Member;
 import model.MemberStatus;
+import model.Registrar;
+import model.SignupResult;
 import model.User;
 import model.UserStatus;
 
@@ -50,107 +49,38 @@ public class Signup extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String firstname = request.getParameter("firstname").trim();
-        String lastname = request.getParameter("lastname").trim();
-        String username = "";
-        String fullname = firstname + " " + lastname;
+        String firstName = request.getParameter("firstname").trim();
+        String lastName = request.getParameter("lastname").trim();
         String dob = request.getParameter("dob");
-        String generatedPassword = "";
         String address = request.getParameter("address");
-        String registedDate = getCurrentDate();
-
-        // Generate the username
-        username = generateUsernameFromFirstAndLast(firstname, lastname);
-
-        // Validate the date
-        Date dobDate = validateDate(dob, "dd-MM-yyyy");
-
-        if (dobDate == null) {
-            response.sendRedirect("/user/signup.jsp?dob=invalid");
-            return;
-        }
-
-        // Generate a password from the dob
-        generatedPassword = generatePasswordFromDate(dobDate);
-
-        System.out.println("First: " + firstname);
-        System.out.println("Last: " + lastname);
-        System.out.println("Username: " + username);
-        System.out.println("Fullname: " + fullname);
-        System.out.println("DOB: " + dob);
-        System.out.println("Address: " + address);
-        System.out.println("Password: " + generatedPassword);
-        System.out.println("DOR: " + registedDate);
-
+        
         try {
-            // Create the connection to the DB
-            // This connection could later be put into the site config
             connection = DriverManager.getConnection("jdbc:derby://localhost:1527/XYZ_Assoc");
-
-            //Check if user exists and redirect if already exists
-            UserDao userDao = new UserDaoImpl(connection);
-            User user = userDao.getUser(username);
-
-            if (user != null) {
-                response.sendRedirect("/user/signup.jsp?user=invalid");
-                return;
+            Registrar registrar = new Registrar(connection);
+            SignupResult result = registrar.register(firstName, lastName, dob, address);
+            if (!result.isRequestValid()) {
+                String redirectString = "/user/signup.jsp?";
+                List<String> arguments = new ArrayList<String>();
+                if (!result.isUserValid()) {
+                    arguments.add("user=invalid");
+                }
+                if (!result.isDobValid()) {
+                    arguments.add("dob=invalid");
+                }
+                for (int i = 0; i < arguments.size(); i++) {
+                    redirectString += arguments.get(i);
+                    if (i != arguments.size() - 1) {
+                        redirectString += ",";
+                    }
+                }
+                response.sendRedirect(redirectString);
+            } else if (result.isConnectionError()) {
+                
             }
-
-            User userToAdd = new User();
-            userToAdd.setId(username);
-            userToAdd.setPassword(generatedPassword);
-            userToAdd.setStatus(UserStatus.APPLIED);
-            userDao.addUser(userToAdd);
-
-            MemberDao memberDao = new MemberDaoImpl(connection);
-            Member memberToAdd = new Member();
-            memberToAdd.setId(username);
-            memberToAdd.setAddress(address);
-            memberToAdd.setBalance(0);
-            memberToAdd.setName(fullname);
-            memberToAdd.setStatus(MemberStatus.APPLIED);
-            memberToAdd.setDob(parseLocalDate(dob, "dd-MM-yyyy"));
-            memberToAdd.setDor(parseLocalDate(registedDate, "dd-MM-yyyy"));
-            memberDao.addMember(memberToAdd);
-
             connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    protected LocalDate parseLocalDate(String date, String dateFormat) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat);
-        return LocalDate.parse(date, dateTimeFormatter);
-    }
-
-    protected String generateUsernameFromFirstAndLast(String first, String last) {
-        return first.charAt(0) + "-" + last;
-    }
-
-    protected String getCurrentDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date currentDate = new Date();
-        return dateFormat.format(currentDate);
-    }
-
-    protected String generatePasswordFromDate(Date date) {
-        String passwordFormatString = "ddMMyy";
-        SimpleDateFormat datePasswordFormatter = new SimpleDateFormat(passwordFormatString);
-        return datePasswordFormatter.format(date);
-    }
-
-    protected Date validateDate(String date, String dateFormat) {
-
-        SimpleDateFormat dateValidator = new SimpleDateFormat(dateFormat);
-        dateValidator.setLenient(false);
-
-        try {
-            return dateValidator.parse(date);
-        } catch (ParseException ex) {
-            return null;
-        }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
