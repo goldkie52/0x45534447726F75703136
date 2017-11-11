@@ -1,0 +1,28 @@
+/*
+    Document   : Custom CSS for the site
+    Author     : James Broadberry 14007903
+ */
+.input-group-addon{
+    width: 40px;
+}
+
+.width-100{
+    width: 100%;
+}
+
+.initial-hidden{
+    display: none;
+}
+
+.overflow-scroll{
+    overflow: scroll;
+}
+
+.xyz-form-width, .xyz-form-width .form-group, .xyz-form-width .row, .xyz-form-width div.alert{
+    max-width: 300px;
+    width: 300px;
+}
+
+.input-group-addon i{
+    margin: 0 auto;
+}
