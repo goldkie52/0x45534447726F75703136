@@ -26,3 +26,7 @@
 .input-group-addon i{
     margin: 0 auto;
 }
+
+.thead-inverse th{
+    background-color: #343a40!important
+}
