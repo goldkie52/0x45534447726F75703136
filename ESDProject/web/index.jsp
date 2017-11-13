@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
      <head>
-        <title>Home</title>
+        <title>XYZ - Home</title>
         <jsp:include page="/includes/references.jsp" />
      </head>
 
