@@ -40,7 +40,7 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
         Payment payment = createPayment(1, "e-simons", "FEE", 10, LocalDate.parse("2015-01-07"), LocalTime.parse("10:08:21"));
         PaymentDaoImpl instance = new PaymentDaoImpl(connection);
         boolean expResult = true;
-        boolean result = instance.addPayemnt(payment);
+        boolean result = instance.addPayment(payment);
         assertEquals(expResult, result);
         assertEquals(true, isPaymentPresentInTestDatabase(payment));
     }
@@ -55,7 +55,7 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
         assertTrue(addPaymentToTestDatabase(payment));
         PaymentDaoImpl instance = new PaymentDaoImpl(connection);
         boolean expResult = false;
-        boolean result = instance.addPayemnt(payment);
+        boolean result = instance.addPayment(payment);
         assertEquals(expResult, result);
     }
 

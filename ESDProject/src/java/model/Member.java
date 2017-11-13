@@ -43,7 +43,7 @@ public class Member implements Serializable {
 
      /**
      * Gets the value of the name property.
-     * @return the id property
+     * @return the name property
      */
     public String getName() {
         return this.name;

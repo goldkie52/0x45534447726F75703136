@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 
 /**
  * Tests the Payment class.
+ * @author Matthew Carpenter 14012396
  * @author Kieran Harris 14010534
  */
 public class PaymentTest {
