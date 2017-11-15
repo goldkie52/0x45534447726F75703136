@@ -7,16 +7,20 @@ package model;
  * @author Charlotte Harris 14008503
  */
 public enum ClaimStatus {
+    
     /**
      * Indicates that the member's claim has been approved.
      */
     APPROVED,
+    
     /**
      * Indicates that the claim has not yet been approved.
      */
     PENDING,
+    
     /**
      * Indicates that the claim has been denied.
      */
     REJECTED,
+    
 }

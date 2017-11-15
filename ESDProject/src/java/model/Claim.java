@@ -28,7 +28,7 @@ public class Claim {
      * @return the id property
      */
     public int getId() {
-        return id;
+        return this.id;
     }
     
     /**
@@ -36,7 +36,7 @@ public class Claim {
      * @param id the value to set the id property to
      */
     public void setId(int id) {
-        this.id=id;
+        this.id = id;
     }
     
     /**
@@ -44,7 +44,7 @@ public class Claim {
      * @return the memId property
      */
     public String getMemId() {
-        return memId;
+        return this.memId;
     }
     
     /**
@@ -52,7 +52,7 @@ public class Claim {
      * @param memId the value to set the memId property to
      */
     public void setMemId(String memId) {
-        this.memId=memId;
+        this.memId = memId;
     }
     
     /**
@@ -60,7 +60,7 @@ public class Claim {
      * @return the date property
      */
     public LocalDate getDate(){
-        return date;
+        return this.date;
     }
     
     /**
@@ -68,7 +68,7 @@ public class Claim {
      * @param date the value to set the date property to
      */
     public void setDate(LocalDate date) {
-        this.date=date;
+        this.date = date;
     }
     
     /**
@@ -76,7 +76,7 @@ public class Claim {
      * @return the rationale property
      */
     public String getRationale() {
-        return rationale;
+        return this.rationale;
     }
     
     /**
@@ -84,7 +84,7 @@ public class Claim {
      * @param rationale the value to set the rationale property to
      */
     public void setRationale(String rationale) {
-        this.rationale=rationale;
+        this.rationale = rationale;
     }
     
     /**
@@ -92,7 +92,7 @@ public class Claim {
      * @return the status property
      */
     public ClaimStatus getStatus() {
-        return status;
+        return this.status;
     }
     
     /**
@@ -100,7 +100,7 @@ public class Claim {
      * @param status the value to set the status property to
      */
     public void setStatus(ClaimStatus status) {
-        this.status=status;
+        this.status = status;
     }
     
     /**
@@ -108,7 +108,7 @@ public class Claim {
      * @return the amount property
      */
     public double getAmount() {
-        return amount;
+        return this.amount;
     }
     
     /**
@@ -116,7 +116,7 @@ public class Claim {
      * @param amount the value to set the amount property to
      */
     public void setAmount(double amount) {
-        this.amount=amount;
+        this.amount = amount;
     }
     
     // <editor-fold defaultstate="collapsed" desc="Overrides">

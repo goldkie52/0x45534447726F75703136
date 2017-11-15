@@ -30,7 +30,7 @@ public class Member implements Serializable {
      * @return the id property
      */
     public String getId() {
-        return id;
+        return this.id;
     }
     
     /**
@@ -38,7 +38,7 @@ public class Member implements Serializable {
      * @param id the value to set the id property to
      */
     public void setId(String id) {
-        this.id=id;
+        this.id = id;
     }
 
      /**
@@ -46,7 +46,7 @@ public class Member implements Serializable {
      * @return the id property
      */
     public String getName() {
-        return name;
+        return this.name;
     }
     
     /**
@@ -62,7 +62,7 @@ public class Member implements Serializable {
      * @return the address property
      */
     public String getAddress() {
-        return address;
+        return this.address;
     }
     
     /**
@@ -78,7 +78,7 @@ public class Member implements Serializable {
      * @return the dob property
      */      
     public LocalDate getDob() {
-        return dob;
+        return this.dob;
     }
     
     /**
@@ -94,7 +94,7 @@ public class Member implements Serializable {
      * @return the dor property
      */  
     public LocalDate getDor() {
-        return dor;
+        return this.dor;
     }
     
     /**
@@ -102,7 +102,7 @@ public class Member implements Serializable {
      * @param dor the value to set
      */
     public void setDor(LocalDate dor) {
-        this.dor=dor;
+        this.dor = dor;
     }
     
         /**
@@ -126,7 +126,7 @@ public class Member implements Serializable {
      * @return the balance property
      */  
     public double getBalance() {
-        return balance;
+        return this.balance;
     }
     
     /**

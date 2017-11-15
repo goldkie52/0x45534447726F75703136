@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import java.sql.Date;
@@ -14,8 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Claim;
 import model.ClaimStatus;
-import model.Member;
-import model.MemberStatus;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -25,6 +18,7 @@ import test.BaseDbTestClass;
 /**
  * Tests the ClaimDaoImpl class.
  * @author Charlotte Harris 14008503
+ * @author Matthew Carpenter 14012396
  */
 public class ClaimDaoImplTest  extends BaseDbTestClass {
     

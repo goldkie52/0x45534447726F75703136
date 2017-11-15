@@ -30,7 +30,7 @@ public class SignupResult {
      * @return the userValid property
      */
     public boolean isUserValid() {
-        return userValid;
+        return this.userValid;
     }
 
     /**
@@ -46,7 +46,7 @@ public class SignupResult {
      * @return the dobValid property
      */
     public boolean isDobValid() {
-        return dobValid;
+        return this.dobValid;
     }
 
     /**
@@ -62,7 +62,7 @@ public class SignupResult {
      * @return the connectionError property
      */
     public boolean isConnectionError() {
-        return connectionError;
+        return this.connectionError;
     }
 
     /**

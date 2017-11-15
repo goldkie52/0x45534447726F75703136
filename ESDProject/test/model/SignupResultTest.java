@@ -237,6 +237,48 @@ public class SignupResultTest {
         assertEquals(connectionError, (boolean)obj);
     }
     
+    /**
+     * Test of getNewUser method, of class SignupResult.
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    @Test
+    public void testGetNewUser() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        SignupResult instance = new SignupResult();
+        User expResult = new User();
+        expResult.setId("user-id");
+        expResult.setPassword("password");
+        expResult.setStatus(UserStatus.APPLIED);
+        
+        final Field field = instance.getClass().getDeclaredField("newUser");
+        field.setAccessible(true);
+        field.set(instance, expResult);
+        
+        User result = instance.getNewUser();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of setNewUser method, of class SignupResult.
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    @Test
+    public void testSetNewUser() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        User newUser = new User();
+        newUser.setId("user-id");
+        newUser.setPassword("password");
+        newUser.setStatus(UserStatus.APPLIED);
+        SignupResult instance = new SignupResult();
+        instance.setNewUser(newUser);
+        
+        final Field field = instance.getClass().getDeclaredField("newUser");
+        field.setAccessible(true);
+        Object obj = field.get(instance);
+        
+        assertEquals(newUser, (User)obj);
+    }
+    
     // </editor-fold>
     
     // </editor-fold>

@@ -46,4 +46,5 @@ public interface ClaimDao {
     Claim[] getClaims(String memId);
     
     // </editor-fold>
+    
 }

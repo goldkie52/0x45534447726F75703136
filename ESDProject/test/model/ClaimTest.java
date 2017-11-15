@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.lang.reflect.Field;
@@ -15,18 +10,22 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author c27-harris
+ * Tests the Claim class.
+ * @author Charlotte Harris 14008503
  */
 public class ClaimTest {
 
     // <editor-fold defaultstate="collapsed" desc="Constructor">
+    
     public ClaimTest() {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     // <editor-fold defaultstate="collapsed" desc="Test Lifecycle">
+    
     @BeforeClass
     public static void setUpClass() {
     }
@@ -44,7 +43,9 @@ public class ClaimTest {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Tests">
+    
     /**
      * Test of getId method, of class Claim.
      * @throws NoSuchFieldException
@@ -91,7 +92,7 @@ public class ClaimTest {
         Claim instance = new Claim();
         String expResult = "test_memId";
 
-        final Field field = instance.getClass().getDeclaredField("mem_id");
+        final Field field = instance.getClass().getDeclaredField("memId");
         field.setAccessible(true);
         field.set(instance, expResult);
 
@@ -110,7 +111,7 @@ public class ClaimTest {
         Claim instance = new Claim();
         instance.setMemId(memId);
 
-        final Field field = instance.getClass().getDeclaredField("mem_id");
+        final Field field = instance.getClass().getDeclaredField("memId");
         field.setAccessible(true);
         Object obj = field.get(instance);
 
@@ -262,5 +263,7 @@ public class ClaimTest {
     }
 
     // </editor-fold>
+    
     // </editor-fold>
+    
 }

@@ -34,11 +34,11 @@ public class ContextListener implements ServletContextListener {
         String databaseName = sc.getInitParameter("databaseName");
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/" + databaseName);
+            this.connection = DriverManager.getConnection("jdbc:derby://localhost:1527/" + databaseName);
         } catch (ClassNotFoundException | SQLException ex) {
             sc.setAttribute("error", ex);
         }
-        sc.setAttribute("databaseConnection", connection);
+        sc.setAttribute("databaseConnection", this.connection);
     }
 
     /**
@@ -49,7 +49,7 @@ public class ContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         try {
-            connection.close();
+            this.connection.close();
         } catch (SQLException ex) { }
     }
     

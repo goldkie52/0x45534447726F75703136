@@ -20,7 +20,7 @@ public class LoginResult {
      * @return the valid property
      */
     public boolean isValid() {
-        return valid;
+        return this.valid;
     }
 
     /**
@@ -36,7 +36,7 @@ public class LoginResult {
      * @return the user property
      */
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     /**
