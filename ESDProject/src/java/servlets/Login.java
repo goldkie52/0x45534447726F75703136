@@ -2,10 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +16,6 @@ import model.LoginResult;
  * @author Matthew Carpenter 14012396
  */
 public class Login extends HttpServlet {
-
-    // <editor-fold defaultstate="collapsed" desc="Variables">
-    
-    private static Connection connection;
-    
-    // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
@@ -42,31 +32,23 @@ public class Login extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        try {
-            // Create the connection to the DB
-            // This connection could later be put into the site config
-            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/XYZ_Assoc");
+        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        
+        Authenticator authenticator = new Authenticator(connection);
+        LoginResult result = authenticator.authenticate(username, password);
             
-            Authenticator authenticator = new Authenticator(connection);
-            LoginResult result = authenticator.authenticate(username, password);
-            
-            if (result.isValid()) {
-                //Set the user variable in the session
-                request.getSession().setAttribute("loggedInUser", result.getUser());
+        if (result.isValid()) {
+            //Set the user variable in the session
+            request.getSession().setAttribute("loggedInUser", result.getUser());
 
-                //Return back to the home page
-                response.sendRedirect("index.jsp");
-            } else {
-                //Invalidate their session
-                request.getSession().invalidate();
+            //Return back to the home page
+            response.sendRedirect("index.jsp");
+        } else {
+            //Invalidate their session
+            request.getSession().invalidate();
 
-                //Return back to the page with an error message
-                response.sendRedirect("/user/login.jsp?invalid=true");
-            }
-            
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            //Return back to the page with an error message
+            response.sendRedirect("/user/login.jsp?invalid=true");
         }
     }
 

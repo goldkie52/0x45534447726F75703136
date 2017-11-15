@@ -1,28 +1,15 @@
 package servlets;
 
-import dao.MemberDao;
-import dao.MemberDaoImpl;
-import dao.UserDao;
-import dao.UserDaoImpl;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Member;
-import model.MemberStatus;
 import model.Registrar;
 import model.SignupResult;
-import model.User;
-import model.UserStatus;
 
 /**
  * This servlet signs up new users.
@@ -30,12 +17,6 @@ import model.UserStatus;
  * @author Matthew Carpenter 14012396
  */
 public class Signup extends HttpServlet {
-
-    // <editor-fold defaultstate="collapsed" desc="Variables">
-    
-    private static Connection connection;
-    
-    // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
@@ -54,33 +35,33 @@ public class Signup extends HttpServlet {
         String dob = request.getParameter("dob");
         String address = request.getParameter("address");
         
-        try {
-            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/XYZ_Assoc");
-            Registrar registrar = new Registrar(connection);
-            SignupResult result = registrar.register(firstName, lastName, dob, address);
-            if (!result.isRequestValid()) {
-                String redirectString = "/user/signup.jsp?";
-                List<String> arguments = new ArrayList<String>();
-                if (!result.isUserValid()) {
-                    arguments.add("user=invalid");
-                }
-                if (!result.isDobValid()) {
-                    arguments.add("dob=invalid");
-                }
-                for (int i = 0; i < arguments.size(); i++) {
-                    redirectString += arguments.get(i);
-                    if (i != arguments.size() - 1) {
-                        redirectString += ",";
-                    }
-                }
-                response.sendRedirect(redirectString);
-            } else if (result.isConnectionError()) {
-                
+        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        
+        Registrar registrar = new Registrar(connection);
+        SignupResult result = registrar.register(firstName, lastName, dob, address);
+        if (!result.isRequestValid()) {
+            String redirectString = "/user/signup.jsp?";
+            List<String> arguments = new ArrayList<>();
+            if (!result.isUserValid()) {
+                arguments.add("user=invalid");
             }
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            if (!result.isDobValid()) {
+                arguments.add("dob=invalid");
+            }
+            for (int i = 0; i < arguments.size(); i++) {
+                redirectString += arguments.get(i);
+                if (i != arguments.size() - 1) {
+                    redirectString += ",";
+                }
+            }
+            response.sendRedirect(redirectString);
+        } else if (result.isConnectionError()) {
+            
+        } else {
+            request.getSession().setAttribute("loggedInUser", result.getNewUser());
+            response.sendRedirect("index.jsp");
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

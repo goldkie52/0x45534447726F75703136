@@ -55,7 +55,7 @@ public class Registrar {
         Date dobDate = validateDate(dob, "dd-MM-yyyy");
         result.setDobValid(dobDate != null);
         
-        UserDao userDao = new UserDaoImpl(connection);
+        UserDao userDao = new UserDaoImpl(this.connection);
         User existingUser = userDao.getUser(username);
         result.setUserValid(existingUser == null);
         if (!result.isRequestValid()) {
@@ -70,7 +70,11 @@ public class Registrar {
         userToAdd.setStatus(UserStatus.APPLIED);
         boolean addedUser = userDao.addUser(userToAdd);
 
-        MemberDao memberDao = new MemberDaoImpl(connection);
+        if (addedUser) {
+            result.setNewUser(userToAdd);
+        }
+        
+        MemberDao memberDao = new MemberDaoImpl(this.connection);
         Member memberToAdd = new Member();
         memberToAdd.setId(username);
         memberToAdd.setAddress(address);

@@ -41,6 +41,10 @@ public class RegistrarTest extends BaseDbTestClass {
         assertEquals(true, result.isDobValid());
         assertEquals(true, result.isRequestValid());
         assertEquals(false, result.isConnectionError());
+        User newUser = result.getNewUser();
+        assertEquals("t-user", newUser.getId());
+        assertEquals("010117", newUser.getPassword());
+        assertEquals(UserStatus.APPLIED, newUser.getStatus());
     }
     
     /**
@@ -55,6 +59,7 @@ public class RegistrarTest extends BaseDbTestClass {
         Registrar instance = new Registrar(connection);
         SignupResult result = instance.register(firstName, lastName, dob, address);
         assertEquals(false, result.isDobValid());
+        assertEquals(null, result.getNewUser());
     }
     
     /**
@@ -71,6 +76,7 @@ public class RegistrarTest extends BaseDbTestClass {
         Registrar instance = new Registrar(connection);
         SignupResult result = instance.register(firstName, lastName, dob, address);
         assertEquals(false, result.isUserValid());
+        assertEquals(null, result.getNewUser());
     }
     
     // </editor-fold>
