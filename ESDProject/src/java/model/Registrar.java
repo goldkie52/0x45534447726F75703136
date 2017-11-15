@@ -70,6 +70,10 @@ public class Registrar {
         userToAdd.setStatus(UserStatus.APPLIED);
         boolean addedUser = userDao.addUser(userToAdd);
 
+        if (addedUser) {
+            result.setNewUser(userToAdd);
+        }
+        
         MemberDao memberDao = new MemberDaoImpl(connection);
         Member memberToAdd = new Member();
         memberToAdd.setId(username);

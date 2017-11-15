@@ -11,6 +11,7 @@ public class SignupResult {
     private boolean userValid;
     private boolean dobValid;
     private boolean connectionError;
+    private User newUser;
     
     // </editor-fold>
     
@@ -70,6 +71,22 @@ public class SignupResult {
      */
     public void setConnectionError(boolean connectionError) {
         this.connectionError = connectionError;
+    }
+    
+    /**
+     * Gets the value of the newUser property.
+     * @return the newUser property
+     */
+    public User getNewUser() {
+        return this.newUser;
+    }
+    
+    /**
+     * Sets the value of the newUser property.
+     * @param newUser the value to set the newUser property to
+     */
+    public void setNewUser(User newUser) {
+        this.newUser = newUser;
     }
     
     // </editor-fold>
