@@ -18,18 +18,35 @@ import java.util.logging.Logger;
  *
  * @author Matthew Carpenter 14012396
  * @author Kieran Harris 14010534
+ * @author Rachel Bailey 13006455
  * @see dao.PaymentDao
  */
 public class PaymentDaoImpl implements PaymentDao {
+    
+     // <editor-fold defaultstate="collapsed" desc="Variables">
+    
+    private final Connection connection;
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Constructor">
 
-    Connection connection;
-
+    /**
+     * Initializes a new instance of the PaymentDaoImpl class.
+     * @param connection the connection to the database
+     */
     public PaymentDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
+
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+
     @Override
-    public boolean addPayemnt(Payment payment) {
+    public boolean addPayment(Payment payment) {
         try (PreparedStatement prepStatement = connection.prepareStatement("INSERT INTO PAYMENTS VALUES (?,?,?,?,?,?)")) {
             prepStatement.setInt(1, payment.getId());
             prepStatement.setString(2, payment.getMemId());
@@ -46,7 +63,7 @@ public class PaymentDaoImpl implements PaymentDao {
 
         return false;
     }
-
+    
     @Override
     public Payment getPayment(int id) {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM PAYMENTS WHERE \"id\" = ?")) {
@@ -64,7 +81,7 @@ public class PaymentDaoImpl implements PaymentDao {
 
         return null;
     }
-
+    
     @Override
     public Payment[] getAllPayments() {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM PAYMENTS");
@@ -83,7 +100,7 @@ public class PaymentDaoImpl implements PaymentDao {
         
         return null;
     }
-
+    
     @Override
     public boolean updatePayment(Payment payment) {
         try (PreparedStatement prepStatement = connection.prepareStatement("UPDATE PAYMENTS SET \"mem_id\" = ?, \"type_of_payment\" = ?, \"amount\" = ?, \"date\" = ?, \"time\" = ? WHERE \"id\" = ?")) {
@@ -99,7 +116,7 @@ public class PaymentDaoImpl implements PaymentDao {
         }
         return false;
     }
-
+    
     private Payment CreatePayment(int id, String memId, String typeOfPayment, float amount, LocalDate date, LocalTime time) {
         Payment payment = new Payment();
 
@@ -112,5 +129,17 @@ public class PaymentDaoImpl implements PaymentDao {
 
         return payment;
     }
+    
+    // </editor-fold>
+
+
+
+
+
+
+
+
+
+
 
 }
