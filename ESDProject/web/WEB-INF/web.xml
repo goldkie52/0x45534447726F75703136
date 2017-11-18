@@ -62,35 +62,35 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
-        <url-pattern>/Login</url-pattern>
+        <url-pattern>/login.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Signup</servlet-name>
-        <url-pattern>/Signup</url-pattern>
+        <url-pattern>/signup.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminViewPayments</servlet-name>
-        <url-pattern>/Admin/ViewPayments</url-pattern>
+        <url-pattern>/admin/view-payments.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MemberViewPayments</servlet-name>
-        <url-pattern>/Member/ViewPayments</url-pattern>
+        <url-pattern>/member/view-payments.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MemberViewClaims</servlet-name>
-        <url-pattern>/Member/ViewClaims</url-pattern>
+        <url-pattern>/member/view-claims.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewMembers</servlet-name>
-        <url-pattern>/Admin/ViewMembers</url-pattern>
+        <url-pattern>/admin/view-members.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminViewClaims</servlet-name>
-        <url-pattern>/Admin/ViewClaims</url-pattern>
+        <url-pattern>/admin/view-claims.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AnnualTurnover</servlet-name>
-        <url-pattern>/Admin/AnnualTurnover</url-pattern>
+        <url-pattern>/admin/annual-turnover.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

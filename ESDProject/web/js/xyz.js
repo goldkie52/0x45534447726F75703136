@@ -1,4 +1,7 @@
 window.onload = function () {
+    
+    $("table").DataTable();
+    
     $("#postcode-lookup").click(function () {
         var postcodeApi = "https://api.getAddress.io/find/";
         var postcode = $("input#postcode").val();

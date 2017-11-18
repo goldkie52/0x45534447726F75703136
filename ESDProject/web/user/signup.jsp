@@ -14,7 +14,7 @@
         <jsp:include page="/includes/nav.jsp" />
 
         <div class="container">
-            <form class="form-horizontal mx-auto xyz-form-width" role="form" method="POST" action="/Signup">
+            <form class="form-horizontal mx-auto xyz-form-width" role="form" method="POST" action="/signup.do">
                 <div class="row">
                     <div>
                         <h2>Sign up</h2>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="row">
                     <div class="mx-auto">
-                        <span class="p-2">Already a member? <a href="login.jsp">Log in here</a></span>
+                        <span class="p-2">Already a member? <a href="/login.do">Log in here</a></span>
                     </div>
                 </div>
             </form>
