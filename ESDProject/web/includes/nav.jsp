@@ -43,13 +43,13 @@
         %>
         <ul class="navbar-nav ml-auto">
             <li class="navbar-item">
-                <a class="nav-link" href="/Signup">
+                <a class="nav-link" href="/signup.do">
                     <i class="fa fa-user-plus" aria-hidden="true"></i>
                     <span>Sign up</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/Login">
+                <a class="nav-link" href="/login.do">
                     <i class="fa fa-sign-in" aria-hidden="true"></i>
                     <span>Log in</span>
                 </a>
