@@ -16,6 +16,10 @@
         <servlet-name>Signup</servlet-name>
         <servlet-class>servlets.Signup</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewPayments</servlet-name>
+        <servlet-class>servlets.admin.ViewPayments</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout.do</url-pattern>
@@ -27,6 +31,10 @@
     <servlet-mapping>
         <servlet-name>Signup</servlet-name>
         <url-pattern>/signup.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewPayments</servlet-name>
+        <url-pattern>/Admin/ViewPayments</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
