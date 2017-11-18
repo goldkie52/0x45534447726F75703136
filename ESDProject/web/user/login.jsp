@@ -50,21 +50,11 @@
                         </div>
                 </div>
                 <div class="row">
-                    <div class="mx-auto">
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" name="remember" type="checkbox">
-                                <span>Remember me</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                         <button type="submit" class="btn btn-success width-100 form-check">Login</button>
                 </div>
                 <div class="row">
                     <div class="mx-auto">
-                        <span class="p-2">Not a member? <a href="signup.jsp">Sign up here</a></span>
+                        <span class="p-2">Not a member? <a href="/signup.do">Sign up here</a></span>
                     </div>
                 </div>
             </form>

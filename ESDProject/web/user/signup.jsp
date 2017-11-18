@@ -92,7 +92,7 @@
                 </div>
                 <div class="row">
                     <div class="mx-auto">
-                        <span class="p-2">Already a member? <a href="login.jsp">Log in here</a></span>
+                        <span class="p-2">Already a member? <a href="/login.do">Log in here</a></span>
                     </div>
                 </div>
             </form>
