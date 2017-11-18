@@ -1,28 +1,22 @@
-package servlets;
+package servlets.admin;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Registrar;
-import model.SignupResult;
 
 /**
- * This servlet signs up new users.
- * @author James Broadberry 14007903
+ * Calculates the annual turnover report and forwards onto report-turnover.jsp.
  * @author Matthew Carpenter 14012396
  */
-public class Signup extends HttpServlet {
-    
-    // <editor-fold defaultstate="collapsed" desc="Methods">
-    
+public class ReportTurnover extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -30,38 +24,19 @@ public class Signup extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String firstName = request.getParameter("firstname").trim();
-        String lastName = request.getParameter("lastname").trim();
-        String dob = request.getParameter("dob");
-        String address = request.getParameter("address");
-        
-        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
-        
-        Registrar registrar = new Registrar(connection);
-        SignupResult result = registrar.register(firstName, lastName, dob, address);
-        if (!result.isRequestValid()) {
-            String redirectString = "/user/signup.jsp?";
-            List<String> arguments = new ArrayList<>();
-            if (!result.isUserValid()) {
-                arguments.add("user=invalid");
-            }
-            if (!result.isDobValid()) {
-                arguments.add("dob=invalid");
-            }
-            for (int i = 0; i < arguments.size(); i++) {
-                redirectString += arguments.get(i);
-                if (i != arguments.size() - 1) {
-                    redirectString += ",";
-                }
-            }
-            response.sendRedirect(redirectString);
-        } else if (result.isConnectionError()) {
-            
-        } else {
-            request.getSession().setAttribute("loggedInUser", result.getNewUser());
-            response.sendRedirect("index.jsp");
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AnnualTurnover</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AnnualTurnover at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -103,6 +78,4 @@ public class Signup extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    // </editor-fold>
-    
 }

@@ -14,7 +14,7 @@
         <%-- Left side nav bar --%>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/index.jsp">Home</a>
+                <a class="nav-link" href="/">Home</a>
             </li>
         </ul>
         <%-- Right side nav bar --%>
@@ -43,13 +43,13 @@
         %>
         <ul class="navbar-nav ml-auto">
             <li class="navbar-item">
-                <a class="nav-link" href="/user/signup.jsp">
+                <a class="nav-link" href="/Signup">
                     <i class="fa fa-user-plus" aria-hidden="true"></i>
                     <span>Sign up</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/user/login.jsp">
+                <a class="nav-link" href="/Login">
                     <i class="fa fa-sign-in" aria-hidden="true"></i>
                     <span>Log in</span>
                 </a>
