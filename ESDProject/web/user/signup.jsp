@@ -14,7 +14,7 @@
         <jsp:include page="/includes/nav.jsp" />
 
         <div class="container">
-            <form class="form-horizontal mx-auto xyz-form-width" role="form" method="POST" action="/signup.do">
+            <form class="form-horizontal mx-auto xyz-form-width" role="form" method="POST" action="/Signup">
                 <div class="row">
                     <div>
                         <h2>Sign up</h2>

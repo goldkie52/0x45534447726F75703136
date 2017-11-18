@@ -30,15 +30,19 @@ public class Signup extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String firstName = request.getParameter("firstname").trim();
-        String lastName = request.getParameter("lastname").trim();
+        String firstName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
         String dob = request.getParameter("dob");
         String address = request.getParameter("address");
+        
+        if (firstName == null || lastName == null || dob == null || address == null) {
+            request.getRequestDispatcher("/user/signup.jsp").forward(request, response);
+        }
         
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         
         Registrar registrar = new Registrar(connection);
-        SignupResult result = registrar.register(firstName, lastName, dob, address);
+        SignupResult result = registrar.register(firstName.trim(), lastName.trim(), dob, address);
         if (!result.isRequestValid()) {
             String redirectString = "/user/signup.jsp?";
             List<String> arguments = new ArrayList<>();
@@ -54,12 +58,12 @@ public class Signup extends HttpServlet {
                     redirectString += ",";
                 }
             }
-            response.sendRedirect(redirectString);
+            request.getRequestDispatcher(redirectString).forward(request, response);
         } else if (result.isConnectionError()) {
             
         } else {
             request.getSession().setAttribute("loggedInUser", result.getNewUser());
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("");
         }
         
     }

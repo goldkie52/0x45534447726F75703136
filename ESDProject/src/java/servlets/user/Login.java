@@ -32,6 +32,10 @@ public class Login extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
+        if (username == null || password == null) {
+            request.getRequestDispatcher("/user/login.jsp").forward(request, response);
+        }
+        
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         
         Authenticator authenticator = new Authenticator(connection);
@@ -42,13 +46,13 @@ public class Login extends HttpServlet {
             request.getSession().setAttribute("loggedInUser", result.getUser());
 
             //Return back to the home page
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("");
         } else {
             //Invalidate their session
             request.getSession().invalidate();
 
             //Return back to the page with an error message
-            response.sendRedirect("/user/login.jsp?invalid=true");
+            request.getRequestDispatcher("/user/login.jsp?invalid=true").forward(request, response);
         }
     }
 
