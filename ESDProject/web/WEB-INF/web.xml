@@ -17,8 +17,44 @@
         <servlet-class>servlets.user.Signup</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ViewPayments</servlet-name>
+        <servlet-name>AdminViewPayments</servlet-name>
         <servlet-class>servlets.admin.ViewPayments</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MakePayment</servlet-name>
+        <servlet-class>servlets.member.MakePayment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MemberViewPayments</servlet-name>
+        <servlet-class>servlets.member.ViewPayments</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MakeClaim</servlet-name>
+        <servlet-class>servlets.member.MakeClaim</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MemberViewClaims</servlet-name>
+        <servlet-class>servlets.member.ViewClaims</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewMembers</servlet-name>
+        <servlet-class>servlets.admin.ViewMembers</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminViewClaims</servlet-name>
+        <servlet-class>servlets.admin.ViewClaims</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AnnualTurnover</servlet-name>
+        <servlet-class>servlets.admin.ReportTurnover</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessMember</servlet-name>
+        <servlet-class>servlets.admin.ProcessMember</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessClaim</servlet-name>
+        <servlet-class>servlets.admin.ProcessClaim</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
@@ -33,8 +69,28 @@
         <url-pattern>/signup.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewPayments</servlet-name>
+        <servlet-name>AdminViewPayments</servlet-name>
         <url-pattern>/Admin/ViewPayments</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MemberViewPayments</servlet-name>
+        <url-pattern>/Member/ViewPayments</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MemberViewClaims</servlet-name>
+        <url-pattern>/Member/ViewClaims</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewMembers</servlet-name>
+        <url-pattern>/Admin/ViewMembers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminViewClaims</servlet-name>
+        <url-pattern>/Admin/ViewClaims</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AnnualTurnover</servlet-name>
+        <url-pattern>/Admin/AnnualTurnover</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

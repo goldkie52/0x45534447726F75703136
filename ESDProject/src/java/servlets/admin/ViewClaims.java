@@ -1,21 +1,17 @@
 package servlets.admin;
 
-import dao.PaymentDao;
-import dao.PaymentDaoImpl;
 import java.io.IOException;
-import java.sql.Connection;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Payment;
 
 /**
- * Retrieves all payments in the system and forwards onto view-payments.jsp.
+ * Retrieves all the claims in the system and forwards onto view-claims.jsp.
  * @author Matthew Carpenter 14012396
  */
-public class ViewPayments extends HttpServlet {
+public class ViewClaims extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,14 +25,18 @@ public class ViewPayments extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        // Get connection from Servlet Context
-        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
-        // Create DAO and get all payments in system
-        PaymentDao paymentDao = new PaymentDaoImpl(connection);
-        Payment[] payments = paymentDao.getAllPayments();
-        // Set payments into attribute and forward onto view
-        request.setAttribute("payments", payments);
-        request.getRequestDispatcher("/admin/view-payments.jsp").forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ViewClaims</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ViewClaims at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
