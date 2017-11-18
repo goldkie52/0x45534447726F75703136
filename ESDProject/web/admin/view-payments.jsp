@@ -16,7 +16,7 @@
         <jsp:include page="/includes/nav.jsp" />
         
         <div class="container">
-            <h1>All Payments</h1>
+            <h1 class="mb-3">All Payments</h1>
             <table class="table table-bordered table-hover">
                 <thead class="thead-inverse">
                     <tr>
