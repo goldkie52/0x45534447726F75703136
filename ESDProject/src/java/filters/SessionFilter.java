@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import model.User;
 
 /**
@@ -65,7 +66,8 @@ public class SessionFilter implements Filter {
             User userInDatabase = userDao.getUser(loggedInUser.getId());
             
             if (userInDatabase == null) {
-                ((HttpServletRequest)request).getSession().removeAttribute("loggedInUser");
+                ((HttpServletRequest)request).getSession().invalidate();
+                ((HttpServletResponse)response).sendRedirect("/");
                 return;
             }
             
