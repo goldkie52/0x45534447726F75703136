@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Registrar;
 import model.SignupResult;
+import model.User;
 
 /**
  * This servlet signs up new users.
@@ -62,8 +63,9 @@ public class Signup extends HttpServlet {
         } else if (result.isConnectionError()) {
             
         } else {
-            request.getSession().setAttribute("loggedInUser", result.getNewUser());
-            response.sendRedirect("");
+            User user = result.getNewUser();
+            request.getSession().setAttribute("loggedInUser", user);
+            response.sendRedirect("/?signedUp=true");
         }
         
     }

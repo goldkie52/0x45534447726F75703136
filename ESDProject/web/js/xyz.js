@@ -1,5 +1,7 @@
 window.onload = function () {
     
+    $(".alert").alert();
+    
     $("table").DataTable();
     
     $("#postcode-lookup").click(function () {
