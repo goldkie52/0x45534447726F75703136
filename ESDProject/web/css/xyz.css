@@ -1,7 +1,7 @@
 /*
     Document   : Custom CSS for the site
     Author     : James Broadberry 14007903
- */
+*/
 .input-group-addon{
     width: 40px;
 }
@@ -29,4 +29,11 @@
 
 .thead-inverse th{
     background-color: #343a40!important
+}
+
+.xyz-alert-bottom-right{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    min-width: 300px;
 }
