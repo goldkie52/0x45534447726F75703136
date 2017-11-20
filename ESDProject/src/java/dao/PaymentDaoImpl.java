@@ -22,29 +22,23 @@ import java.util.logging.Logger;
  * @see dao.PaymentDao
  */
 public class PaymentDaoImpl implements PaymentDao {
-    
-     // <editor-fold defaultstate="collapsed" desc="Variables">
-    
-    private final Connection connection;
-    
-    // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Constructor">
 
+    // <editor-fold defaultstate="collapsed" desc="Variables">
+    private final Connection connection;
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Constructor">
     /**
      * Initializes a new instance of the PaymentDaoImpl class.
+     *
      * @param connection the connection to the database
      */
     public PaymentDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
-
-    
     // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="Methods">
-
     @Override
     public boolean addPayment(Payment payment) {
         try (PreparedStatement prepStatement = connection.prepareStatement("INSERT INTO PAYMENTS VALUES (?,?,?,?,?,?)")) {
@@ -63,7 +57,7 @@ public class PaymentDaoImpl implements PaymentDao {
 
         return false;
     }
-    
+
     @Override
     public Payment getPayment(int id) {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM PAYMENTS WHERE \"id\" = ?")) {
@@ -81,26 +75,26 @@ public class PaymentDaoImpl implements PaymentDao {
 
         return null;
     }
-    
+
     @Override
     public Payment[] getAllPayments() {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM PAYMENTS");
                 ResultSet resultSet = prepStatement.executeQuery()) {
             ArrayList<Payment> payments = new ArrayList<>();
-            while (resultSet.next()) {                
+            while (resultSet.next()) {
                 payments.add(CreatePayment(resultSet.getInt("id"), resultSet.getString("mem_id"),
-                            resultSet.getString("type_of_payment").trim(), resultSet.getFloat("amount"),
-                            resultSet.getDate("date").toLocalDate(), resultSet.getTime("time").toLocalTime()));
+                        resultSet.getString("type_of_payment").trim(), resultSet.getFloat("amount"),
+                        resultSet.getDate("date").toLocalDate(), resultSet.getTime("time").toLocalTime()));
             }
-            
+
             return payments.toArray(new Payment[0]);
         } catch (SQLException ex) {
 
         }
-        
+
         return null;
     }
-    
+
     @Override
     public boolean updatePayment(Payment payment) {
         try (PreparedStatement prepStatement = connection.prepareStatement("UPDATE PAYMENTS SET \"mem_id\" = ?, \"type_of_payment\" = ?, \"amount\" = ?, \"date\" = ?, \"time\" = ? WHERE \"id\" = ?")) {
@@ -116,7 +110,7 @@ public class PaymentDaoImpl implements PaymentDao {
         }
         return false;
     }
-    
+
     private Payment CreatePayment(int id, String memId, String typeOfPayment, float amount, LocalDate date, LocalTime time) {
         Payment payment = new Payment();
 
@@ -129,17 +123,27 @@ public class PaymentDaoImpl implements PaymentDao {
 
         return payment;
     }
-    
+
+    @Override
+    public Payment[] getPaymentsForMember(String memId) {
+        try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM PAYMENTS WHERE \"mem_id\" = ?")) {
+            prepStatement.setString(1, memId);
+            try (ResultSet resultSet = prepStatement.executeQuery()) {
+                ArrayList<Payment> payments = new ArrayList<>();
+                while (resultSet.next()) {
+                    payments.add(CreatePayment(resultSet.getInt("id"), resultSet.getString("mem_id"),
+                            resultSet.getString("type_of_payment").trim(), resultSet.getFloat("amount"),
+                            resultSet.getDate("date").toLocalDate(), resultSet.getTime("time").toLocalTime()));
+                }
+
+                return payments.toArray(new Payment[0]);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PaymentDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
     // </editor-fold>
-
-
-
-
-
-
-
-
-
-
 
 }

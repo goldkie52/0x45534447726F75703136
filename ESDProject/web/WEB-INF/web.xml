@@ -77,6 +77,10 @@
         <url-pattern>/member/view-payments.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>MakePayment</servlet-name>
+        <url-pattern>/member/make-payment.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>MemberViewClaims</servlet-name>
         <url-pattern>/member/view-claims.do</url-pattern>
     </servlet-mapping>

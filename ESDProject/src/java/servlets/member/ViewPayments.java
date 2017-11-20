@@ -1,11 +1,15 @@
 package servlets.member;
 
+import dao.PaymentDao;
+import dao.PaymentDaoImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Payment;
+import model.User;
 
 /**
  * Retrieves all payments for the currently logged in member and forwards onto view-payments.jsp.
@@ -25,18 +29,27 @@ public class ViewPayments extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ViewPayments</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ViewPayments at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        // Get connection from Servlet Context
+        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        // Create DAO and get all payments in system
+        PaymentDao paymentDao = new PaymentDaoImpl(connection);
+        
+        User loggedInUser = null;
+        if (request.getSession().getAttribute("loggedInUser") != null) {
+            loggedInUser = ((User) request.getSession().getAttribute("loggedInUser"));
         }
+        
+        Payment[] payments = paymentDao.getPaymentsForMember(loggedInUser.getId());
+        
+        float balance = 0;
+        for (Payment payment : payments) {
+            balance += payment.getAmount();
+        }
+        
+        // Set payments into attribute and forward onto view
+        request.setAttribute("payments", payments);
+        request.setAttribute("balance", balance);
+        request.getRequestDispatcher("/member/payments/view-payments.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
