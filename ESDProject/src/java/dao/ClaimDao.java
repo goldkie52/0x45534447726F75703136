@@ -1,11 +1,13 @@
 package dao;
 
+import java.time.LocalDate;
 import model.Claim;
 
 /**
  * Provides the interface for accessing claim data.
  * @author Matthew Carpenter 14012396
  * @author Charlotte Harris 14008503
+ * @author Rachel Bailey 13006455
  */
 public interface ClaimDao {
     
@@ -44,6 +46,14 @@ public interface ClaimDao {
      * @return all claims in the system from specified member if the operation was a success; otherwise null
      */
     Claim[] getClaims(String memId);
+    
+    /**
+     * Gets all the claims with the specified date
+     * @param date the date of the claim to get the claims for
+     * @return all claims in the system from specified member if the operation was a success; otherwise null
+     */
+    Claim[] getClaimsFromDate(LocalDate date);
+    
     
     // </editor-fold>
     

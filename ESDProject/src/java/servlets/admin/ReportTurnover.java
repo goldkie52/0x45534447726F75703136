@@ -1,14 +1,25 @@
 package servlets.admin;
 
+import dao.ClaimDao;
+import dao.ClaimDaoImpl;
+import dao.MemberDao;
+import dao.MemberDaoImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.time.LocalDate;
+import java.time.Month;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Claim;
+import model.Member;
+import model.MemberStatus;
 
 /**
  * Calculates the annual turnover report and forwards onto report-turnover.jsp.
+ *
  * @author Matthew Carpenter 14012396
  */
 public class ReportTurnover extends HttpServlet {
@@ -25,18 +36,25 @@ public class ReportTurnover extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AnnualTurnover</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AnnualTurnover at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        // Get connection
+        Connection connection = (Connection) request.getServletContext().getAttribute("databaseConnection");
+        //Creates Claim DAO and Member DAO
+        ClaimDao claimDao = new ClaimDaoImpl(connection);
+        MemberDao memberDao = new MemberDaoImpl(connection);
+        //Retrieves all claims into system for the current year and all verified members
+        Claim[] claims = claimDao.getClaimsFromDate(LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1));
+        Member[] members = memberDao.getAllVerifiedMembers(MemberStatus.APPROVED);
+        //Initialise total for claims in current year
+        double totalClaimValue = 0;
+        //For each of the claims, totals the claim amount
+        for (Claim claim : claims) {
+            totalClaimValue += claim.getAmount();
         }
+        
+        //Sets members into attribute
+        request.setAttribute("totalClaimValue", totalClaimValue);
+        request.getRequestDispatcher("/admin/report-turnover.jsp").forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

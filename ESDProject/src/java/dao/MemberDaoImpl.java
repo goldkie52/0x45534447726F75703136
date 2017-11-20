@@ -14,32 +14,29 @@ import model.MemberStatus;
 
 /**
  * Provides the implementation for accessing member data from the database.
+ *
  * @author Matthew Carpenter 14012396
  * @author Rachel Bailey 13006455
  * @see dao.MemberDao
  */
 public class MemberDaoImpl implements MemberDao {
-    
-    // <editor-fold defaultstate="collapsed" desc="Variables">
-    
-    private final Connection connection;
-    
-    // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Constructor">
 
+    // <editor-fold defaultstate="collapsed" desc="Variables">
+    private final Connection connection;
+
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Constructor">
     /**
      * Initializes a new instance of the MemberDaoImpl class.
+     *
      * @param connection the connection to the database
      */
     public MemberDaoImpl(Connection connection) {
         this.connection = connection;
     }
-    
-    // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="Methods">
 
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Methods">
     @Override
     public boolean addMember(Member member) {
         try (PreparedStatement prepStatement = connection.prepareStatement("INSERT INTO MEMBERS VALUES (?, ?, ?, ?, ?, ?, ?)")) {
@@ -56,7 +53,7 @@ public class MemberDaoImpl implements MemberDao {
         }
         return false;
     }
-    
+
     @Override
     public Member getMember(String id) {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM MEMBERS WHERE \"id\" = ?")) {
@@ -77,7 +74,7 @@ public class MemberDaoImpl implements MemberDao {
         }
         return null;
     }
-    
+
     @Override
     public Member[] getAllMembers() {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM MEMBERS");
@@ -99,7 +96,30 @@ public class MemberDaoImpl implements MemberDao {
         }
         return null;
     }
-    
+
+    @Override
+    public Member[] getAllVerifiedMembers(MemberStatus status) {
+        try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM MEMBERS WHERE \"status\" = ?")) {
+            prepStatement.setString(1, status.toString());
+            ArrayList<Member> members = new ArrayList<>();
+            try (ResultSet result = prepStatement.executeQuery()) {
+                while (result.next()) {
+                    String id = result.getString("id");
+                    String name = result.getString("name");
+                    String address = result.getString("address");
+                    LocalDate dob = result.getDate("dob").toLocalDate();
+                    LocalDate dor = result.getDate("dor").toLocalDate();
+                    double balanceString = result.getDouble("balance");
+                    members.add(createMember(id, name, address, dob, dor, status.toString(), balanceString));
+                }
+            }
+            return members.toArray(new Member[0]);
+        } catch (SQLException ex) {
+            Logger.getLogger(MemberDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     @Override
     public boolean updateMember(Member member) {
         try (PreparedStatement prepStatement = connection.prepareStatement("UPDATE MEMBERS SET \"name\" = ?, \"address\" = ?, \"dob\" = ?, \"dor\" = ?, \"status\" = ?, \"balance\" = ? WHERE \"id\" = ?")) {
@@ -116,7 +136,7 @@ public class MemberDaoImpl implements MemberDao {
         }
         return false;
     }
-    
+
     private Member createMember(String id, String name, String address, LocalDate dob, LocalDate dor, String status, double balance) {
         Member member = new Member();
         member.setId(id);
@@ -128,7 +148,6 @@ public class MemberDaoImpl implements MemberDao {
         member.setBalance(balance);
         return member;
     }
-    
+
     // </editor-fold>
-    
 }
