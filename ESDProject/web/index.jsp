@@ -1,19 +1,40 @@
 <%-- 
     Document   : Main home page
     Author     : James Broadberry 14007903
+    Author     : Kieran Harris 14010534
 --%>
 
+<%@page import="model.User"%>
 <!DOCTYPE html>
 <html>
-     <head>
+    <head>
         <title>XYZ - Home</title>
         <jsp:include page="/includes/references.jsp" />
-     </head>
+    </head>
 
     <body>
         <jsp:include page="/includes/nav.jsp" />
-        
+
         <div class="container">
+            <%
+                // Check if the query string has set signedUp to true, and if it has, display an the username and password
+                if (request.getParameter("signedUp") != null && request.getParameter("signedUp").equals("true")) {
+                    if ((request.getSession().getAttribute("loggedInUser") != null)) {
+                        User loggedInUser = (User) request.getSession().getAttribute("loggedInUser");
+            %>
+            
+                <div class="alert alert-success alert-dismissible fade show m-0 xyz-alert-bottom-right" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <strong>Account created</strong><br/>Username: <% out.print(loggedInUser.getId()); %><br/>Password: <% out.print(loggedInUser.getPassword()); %>
+                </div>
+
+            <%
+                }
+            }
+            %>
             <h1>Welcome to XYZ Drivers Association</h1>
             <p>
                 XYZ Drivers Association decides to set up a solidarity fund to 
