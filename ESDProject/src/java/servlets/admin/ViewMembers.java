@@ -1,15 +1,20 @@
 package servlets.admin;
 
+import dao.MemberDao;
+import dao.MemberDaoImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Member;
 
 /**
  * Retrieves all the members in the system and forwards onto view-members.jsp.
- * @author Matthew Carpenters 14012396
+ * @author Matthew Carpenter 14012396
+ * @author Rachel Bailey 13006455
  */
 public class ViewMembers extends HttpServlet {
 
@@ -25,19 +30,16 @@ public class ViewMembers extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ViewMembers</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ViewMembers at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        //Get connection
+        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        //Creates Member DAO and retrieves all members into system
+        MemberDao memberDao = new MemberDaoImpl(connection);
+        Member[] members = memberDao.getAllMembers();
+        //Sets members into attribute
+        request.setAttribute("members", members);
+        request.getRequestDispatcher("/admin/view-members.jsp").forward(request, response);
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
