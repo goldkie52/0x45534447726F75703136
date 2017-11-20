@@ -39,6 +39,7 @@
                         case APPROVED:
                         case SUSPENDED:
                             links.put("View Payments", "/member/view-payments.do");
+                            links.put("Make Payment", "/member/make-payment.do");
                             links.put("View Claims", "/member/view-claims.do");
                             break;
                     }

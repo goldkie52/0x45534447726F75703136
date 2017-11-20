@@ -33,6 +33,12 @@ public interface PaymentDao {
     public Payment[] getAllPayments();
     
     /**
+     * Gets all the Payments for a specified memId
+     * @return all payments  for a specified memId if the operation was a success; otherwise null
+     */
+    public Payment[] getPaymentsForMember(String memId);
+    
+    /**
      * Updates the specified payment in the system.
      * @param payment the payment to update
      * @return true if the update was successful, otherwise false

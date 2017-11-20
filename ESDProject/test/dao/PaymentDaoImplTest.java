@@ -150,6 +150,29 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
         boolean result = instance.updatePayment(payment);
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void testGetPaymentsForMember_PaymentsPresent(){
+        int[] payments = new int[]{1, 2, 3};
+        String[] memIds = new String[]{"memId1", "memId2"};
+        String[] typeOfPayments = new String[]{"FEE", "FEE", "FEE"};
+        float[] amounts = new float[]{10, 10 , 10};
+        LocalDate[] dates = new LocalDate[]{LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07")};
+        LocalTime[] times = new LocalTime[]{LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21")};
+        
+        Payment[] expResult = new Payment[payments.length];
+        for (int i = 0; i < payments.length; i++) {
+            Payment payment = createPayment(payments[i], memIds[0], typeOfPayments[i], amounts[i], dates[i], times[i]);
+            expResult[i] = payment;
+            addPaymentToTestDatabase(payment);
+        }
+        
+        addPaymentToTestDatabase(createPayment(4, memIds[1], "FEE", 10, LocalDate.parse("2015-01-07"), LocalTime.parse("10:08:21")));
+        
+        PaymentDaoImpl instance = new PaymentDaoImpl(connection);
+        Payment[] result = instance.getPaymentsForMember(memIds[0]);
+        assertArrayEquals(expResult, result);
+    }
 
     // </editor-fold>
     

@@ -3,18 +3,28 @@
     Author     : James Broadberry 14007903
 --%>
 
+<%@page import="model.Payment"%>
 <!DOCTYPE html>
 <html>
-     <head>
+    <head>
         <title>XYZ - View Payments</title>
         <jsp:include page="/includes/references.jsp" />
-     </head>
+    </head>
 
     <body>
         <jsp:include page="/includes/nav.jsp" />
-        
+
         <div class="container">
-            <h1 class="mb-3">Your Payments</h1>
+            <div class="row mb-3">
+                <div class="col">
+                    <h1>Your Payments</h1>
+                </div>
+                <div class="col ml-auto">
+                    <h5 class="text-right">Balance: £<% out.print(String.format("%.2f", (Float) request.getAttribute("balance"))); %></h5>    
+                </div>
+
+            </div>
+
             <table class="table table-bordered table-hover">
                 <thead class="thead-inverse">
                     <tr>
@@ -25,18 +35,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <% Payment[] payments = (Payment[]) request.getAttribute("payments");
+                        for (Payment payment : payments) {
+                    %>
                     <tr>
-                        <td>01-01-2001</td>
-                        <td>10:52</td>
-                        <td>FEE</td>
-                        <td>£10</td>
+                        <td><% out.print(payment.getDate().toString()); %></td>
+                        <td><% out.print(payment.getTime().toString()); %></td>
+                        <td><% out.print(payment.getTypeOfPayment()); %></td>
+                        <td>£<% out.print(String.format("%.2f", payment.getAmount())); %></td>
                     </tr>
-                    <tr>
-                        <td>02-01-2001</td>
-                        <td>11:21</td>
-                        <td>FEE</td>
-                        <td>£10</td>
-                    </tr>
+                    <% }%>
                 </tbody>
             </table>
         </div>       
