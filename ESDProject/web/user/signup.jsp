@@ -26,7 +26,6 @@
                     // Check if the query string has set invalid to true, and if it has, display an error message
                     if (request.getParameter("user") != null && request.getParameter("user").equals("invalid")) {
                 %>
-                
                         <div class="alert alert-danger" role="alert">
                             Someone with your name is already registered.
                         </div>
