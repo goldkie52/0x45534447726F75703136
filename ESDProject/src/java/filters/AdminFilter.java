@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package filters;
 
 import java.io.IOException;
@@ -21,10 +16,12 @@ import model.User;
 import model.UserStatus;
 
 /**
- *
- * @author jj2-broadberry
+ * Filter for admin pages - if not logged in or not admin will redirect to home
+ * @author James Broadberry 14007903
  */
 public class AdminFilter implements Filter {
+    
+    // <editor-fold defaultstate="collapsed" desc="Variables">
     
     private static final boolean debug = true;
 
@@ -33,9 +30,17 @@ public class AdminFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public AdminFilter() {
-    }    
+    // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Constructor">
+    
+    public AdminFilter() {
+    } 
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+        
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -56,24 +61,6 @@ public class AdminFilter implements Filter {
         if (debug) {
             log("AdminFilter:DoAfterProcessing");
         }
-
-        // Write code here to process the request and/or response after
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log the attributes on the
-        // request object after the request has been processed. 
-        /*
-	for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    Object value = request.getAttribute(name);
-	    log("attribute: " + name + "=" + value.toString());
-
-	}
-         */
-        // For example, a filter might append something to the response.
-        /*
-	PrintWriter respOut = new PrintWriter(response.getWriter());
-	respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
-         */
     }
 
     /**
@@ -216,5 +203,7 @@ public class AdminFilter implements Filter {
     public void log(String msg) {
         filterConfig.getServletContext().log(msg);        
     }
+    
+    // </editor-fold>
     
 }
