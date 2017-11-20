@@ -93,6 +93,10 @@
         <url-pattern>/member/view-claims.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>MakeClaim</servlet-name>
+        <url-pattern>/member/make-claim.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ViewMembers</servlet-name>
         <url-pattern>/admin/view-members.do</url-pattern>
     </servlet-mapping>

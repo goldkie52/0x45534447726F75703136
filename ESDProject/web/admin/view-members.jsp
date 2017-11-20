@@ -17,7 +17,7 @@
         
         <div class="container">
             <h1 class="mb-3">All Members</h1>
-            <table class="table, table-bordered table-hover">
+            <table class="table table-bordered table-hover">
                 <thead class="thead-inverse">
                     <tr>
                         <th>Member</th>
@@ -36,7 +36,7 @@
                     <tr>
                         <td><% out.print(member.getId()); %> </td>  
                         <td><% out.print(member.getName()); %> </td>
-                        <td><% out.print(member.getAddress()); %> </td>
+                        <td><% out.print(member.getAddress().replace(",", ",<br/>")); %> </td>
                         <td><% out.print(member.getDob().toString()); %> </td>
                         <td><% out.print(member.getDor().toString()); %> </td>
                         <td><% out.print(member.getStatus().toString()); %> </td>

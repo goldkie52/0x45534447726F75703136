@@ -41,6 +41,7 @@
                             links.put("View Payments", "/member/view-payments.do");
                             links.put("Make Payment", "/member/make-payment.do");
                             links.put("View Claims", "/member/view-claims.do");
+                            links.put("Make Claim", "/member/make-claim.do");
                             break;
                     }
 
