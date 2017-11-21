@@ -37,3 +37,9 @@
     right: 10px;
     min-width: 300px;
 }
+
+table .btn {
+    line-height: 10px !important;
+    font-size: smaller;
+    margin-bottom: 0px;
+}

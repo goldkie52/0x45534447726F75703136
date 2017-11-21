@@ -116,6 +116,10 @@
         <servlet-name>AnnualTurnover</servlet-name>
         <url-pattern>/admin/annual-turnover.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessClaim</servlet-name>
+        <url-pattern>/admin/process-claim.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
