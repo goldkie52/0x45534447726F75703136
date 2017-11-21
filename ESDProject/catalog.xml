@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/ESDWebService/ProcessClaim?wsdl" uri="src/conf/xml-resources/web-service-references/ProcessClaim/wsdl/localhost_8080/ESDWebService/ProcessClaim.wsdl"/>
+    <system systemId="http://localhost:8080/ESDWebService/ProcessClaim?xsd=1" uri="src/conf/xml-resources/web-service-references/ProcessClaim/wsdl/localhost_8080/ESDWebService/ProcessClaim.xsd_1.xsd"/>
+</catalog>
