@@ -1,15 +1,20 @@
 package servlets.member;
 
+import dao.ClaimDao;
+import dao.ClaimDaoImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Claim;
+import model.User;
 
 /**
  * Retrieves all payments for the currently logged in member and forwards onto view-claims.jsp.
  * @author Matthew Carpenter 14012396
+ * @author Charlotte Harris 14008503
  */
 public class ViewClaims extends HttpServlet {
 
@@ -25,18 +30,22 @@ public class ViewClaims extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ViewClaims</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ViewClaims at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        // Get connection from Servlet Context
+        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        // Create DAO and get all payments in system
+        ClaimDao claimDao = new ClaimDaoImpl(connection);
+        
+        User loggedInUser = null;
+        if (request.getSession().getAttribute("loggedInUser") != null) {
+            loggedInUser = ((User) request.getSession().getAttribute("loggedInUser"));
         }
+        
+        //DOUBLE CHECK CALL IS CORRECT!
+        Claim[] claims = claimDao.getClaims(loggedInUser.getId());
+        
+        // Set payments into attribute and forward onto view
+        request.setAttribute("claims", claims);
+        request.getRequestDispatcher("/member/claims/view-claims.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
