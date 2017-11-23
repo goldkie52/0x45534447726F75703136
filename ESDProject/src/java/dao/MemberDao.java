@@ -1,6 +1,7 @@
 package dao;
 
 import model.Member;
+import model.MemberStatus;
 
 /**
  * Provides the interface for accessing member data.
@@ -30,6 +31,13 @@ public interface MemberDao {
      * @return all members in the system if the operation was a success; otherwise null
      */
     Member[] getAllMembers();
+    
+        /**
+     * Gets all the verified members in the system.
+     * @param status the status of the member
+     * @return all verified members in the system if the operation was a success; otherwise null
+     */
+    Member[] getAllVerifiedMembers(MemberStatus status);
     
     /**
      * Updates the specified member in the system.

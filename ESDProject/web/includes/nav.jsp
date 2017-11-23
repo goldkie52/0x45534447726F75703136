@@ -33,7 +33,7 @@
                             links.put("View Payments", "/admin/view-payments.do");
                             links.put("View Members", "/admin/view-members.do");
                             links.put("View Claims", "/admin/view-claims.do");
-                            links.put("Annual Turnover", "/admin/annual-turnover.do");
+                            links.put("Report Turnover", "/admin/report-turnover.do");
                             break;
                         case APPLIED:
                         case APPROVED:
