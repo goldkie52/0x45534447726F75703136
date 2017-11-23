@@ -9,11 +9,16 @@ import dao.ClaimDao;
 import dao.ClaimDaoImpl;
 import dao.MemberDao;
 import dao.MemberDaoImpl;
+import dao.PaymentDao;
+import dao.PaymentDaoImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.HashSet;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,13 +26,17 @@ import javax.servlet.http.HttpServletResponse;
 import model.Claim;
 import model.Member;
 import model.MemberStatus;
+import model.Payment;
+import model.User;
 
 /**
  * Calculates the annual turnover report and forwards onto report-turnover.jsp.
+ *
  * @author Rachel Bailey 13006455
  */
 public class ChargeMembers extends HttpServlet {
-   /**
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -38,28 +47,52 @@ public class ChargeMembers extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");        
-        // Get connection
-        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
-         //Creates Claim DAO and Member DAO
-        ClaimDao claimDao = new ClaimDaoImpl(connection);
-        MemberDao memberDao = new MemberDaoImpl(connection);
-        //Retrieves all claims into system for the current year and all verified members
-        Claim[] claims = claimDao.getClaimsFromDate(LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1));
-        Member[] members = memberDao.getAllVerifiedMembers(MemberStatus.APPROVED);
-        //Initialise total for claims in current year
-        double totalClaimValue = 0;
-        //For each of the claims, totals the claim amount
-        for (Claim claim : claims) {
-            totalClaimValue += claim.getAmount();
+        response.setContentType("text/html;charset=UTF-8");
+
+        String stringAmount = request.getParameter("memberAmount");
+        if (stringAmount == null) {
+            request.getRequestDispatcher("/admin/report-turnover.jsp?success=false").forward(request, response);
         }
-        //Defines member amount as total claim value divided by amount of members
-        double memberAmount = totalClaimValue/members.length;
+
+        float amount = 0;
+        try {
+            amount = Float.parseFloat(stringAmount);
+        } catch (NumberFormatException e) {
+            request.getRequestDispatcher("/admin/report-turnover.jsp?success=false").forward(request, response);
+        }
+
+        Connection connection = (Connection) request.getServletContext().getAttribute("databaseConnection");
+        MemberDao memberDao = new MemberDaoImpl(connection);
+        PaymentDao paymentDao = new PaymentDaoImpl(connection);
+
+        // Find the next paymentId
+        Payment[] allPayment = paymentDao.getAllPayments();
+        int paymentId = 0;
+        for (Payment payment : allPayment) {
+            if (payment.getId() >= paymentId) {
+                paymentId = payment.getId() + 1;
+            }
+        }
         
-        //Sets members into attribute
-        request.setAttribute("memberAmount", memberAmount);
-        request.getRequestDispatcher("/admin/charge-members.jsp").forward(request, response);
-        
+        // Find the next memberId
+        Member[] allVerifiedMembers = memberDao.getAllVerifiedMembers(MemberStatus.APPROVED);
+        for (Member member : allVerifiedMembers) {
+
+            Payment payment = new Payment();
+            payment.setId(paymentId);
+            payment.setMemId(member.getId());
+            payment.setTypeOfPayment("CHARGE");
+            payment.setAmount(amount);
+            LocalDateTime dateTime = LocalDateTime.now();
+            payment.setDate(dateTime.toLocalDate());
+            payment.setTime(dateTime.toLocalTime());
+
+            if (!paymentDao.addPayment(payment)) {
+                request.getRequestDispatcher("/admin/report-turnover.do?success=false").forward(request, response);
+            }
+            paymentId++;
+        }
+        request.getRequestDispatcher("/admin/report-turnover.do?success=true").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -102,4 +135,3 @@ public class ChargeMembers extends HttpServlet {
     }// </editor-fold>
 
 }
-

@@ -52,7 +52,10 @@ public class ReportTurnover extends HttpServlet {
         }
         
         //Sets members into attribute
+        request.setAttribute("turnoverClaims", claims);
+        request.setAttribute("turnoverMembers", members);
         request.setAttribute("totalClaimValue", totalClaimValue);
+        request.setAttribute("memberAmount", totalClaimValue/members.length);
         request.getRequestDispatcher("/admin/report-turnover.jsp").forward(request, response);
         
     }

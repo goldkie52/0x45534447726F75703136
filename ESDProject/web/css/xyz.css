@@ -43,3 +43,7 @@ table .btn {
     font-size: smaller;
     margin-bottom: 0px;
 }
+
+.xyz-line-height-40{
+    line-height: 40px;
+}

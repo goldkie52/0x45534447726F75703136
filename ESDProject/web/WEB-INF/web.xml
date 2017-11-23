@@ -20,6 +20,14 @@
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
+        <filter>
+        <filter-name>MemberFilter</filter-name>
+        <filter-class>filters.MemberFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>MemberFilter</filter-name>
+        <url-pattern>/member/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>servlets.user.Logout</servlet-class>
@@ -72,6 +80,10 @@
         <servlet-name>ProcessClaim</servlet-name>
         <servlet-class>servlets.admin.ProcessClaim</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChargeMembers</servlet-name>
+        <servlet-class>servlets.admin.ChargeMembers</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout.do</url-pattern>
@@ -114,7 +126,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AnnualTurnover</servlet-name>
-        <url-pattern>/admin/annual-turnover.do</url-pattern>
+        <url-pattern>/admin/report-turnover.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChargeMembers</servlet-name>
+        <url-pattern>/admin/charge-members.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProcessClaim</servlet-name>
