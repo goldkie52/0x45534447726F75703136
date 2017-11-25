@@ -18,12 +18,13 @@ import model.UserStatus;
 /**
  * Filter for admin pages - if not logged in or not admin will redirect to home
  * @author James Broadberry 14007903
+ * @author Matthew Carpenter 14012396
  */
 public class AdminFilter implements Filter {
     
     // <editor-fold defaultstate="collapsed" desc="Variables">
     
-    private static final boolean debug = true;
+    private static final boolean DEBUG = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -43,7 +44,7 @@ public class AdminFilter implements Filter {
         
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (debug) {
+        if (DEBUG) {
             log("AdminFilter:DoBeforeProcessing");
         }
 
@@ -58,7 +59,7 @@ public class AdminFilter implements Filter {
     
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (debug) {
+        if (DEBUG) {
             log("AdminFilter:DoAfterProcessing");
         }
     }
@@ -72,11 +73,12 @@ public class AdminFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
         
-        if (debug) {
+        if (DEBUG) {
             log("AdminFilter:doFilter()");
         }
         
@@ -85,12 +87,11 @@ public class AdminFilter implements Filter {
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (IOException | ServletException t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
-            t.printStackTrace();
         }
         
         doAfterProcessing(request, response);
@@ -110,6 +111,7 @@ public class AdminFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return the filter configuration object
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -127,16 +129,19 @@ public class AdminFilter implements Filter {
     /**
      * Destroy method for this filter
      */
+    @Override
     public void destroy() {        
     }
 
     /**
      * Init method for this filter
+     * @param filterConfig the filter configuration object
      */
+    @Override
     public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (DEBUG) {                
                 log("AdminFilter:Initializing filter");
             }
         }
@@ -150,7 +155,7 @@ public class AdminFilter implements Filter {
         if (filterConfig == null) {
             return ("AdminFilter()");
         }
-        StringBuffer sb = new StringBuffer("AdminFilter(");
+        StringBuilder sb = new StringBuilder("AdminFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -162,26 +167,26 @@ public class AdminFilter implements Filter {
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
-                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
-
-                // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
-                pw.print("</pre></body>\n</html>"); //NOI18N
-                pw.close();
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream());
+                        PrintWriter pw = new PrintWriter(ps);) {
+                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+                    
+                    // PENDING! Localize this for next official release
+                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                    pw.print(stackTrace);
+                    pw.print("</pre></body>\n</html>"); //NOI18N
+                    pw.close();
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         } else {
             try {
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                t.printStackTrace(ps);
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream())) {
+                    t.printStackTrace(ps);
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -195,7 +200,7 @@ public class AdminFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }

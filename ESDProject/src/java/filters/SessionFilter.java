@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package filters;
 
 import dao.UserDao;
@@ -23,14 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 import model.User;
 
 /**
- *
- * @author Kieran
+ * Filter for site to ensure user is still valid during session.
+ * @author Kieran Harris 14010534
+ * @author Matthew Carpenter 14012396
  */
 public class SessionFilter implements Filter {
     
     // <editor-fold defaultstate="collapsed" desc="Variables">
     
-    private static final boolean debug = true;
+    private static final boolean DEBUG = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -50,7 +46,7 @@ public class SessionFilter implements Filter {
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (debug) {
+        if (DEBUG) {
             log("SessionFilter:DoBeforeProcessing");
         }
         
@@ -80,7 +76,7 @@ public class SessionFilter implements Filter {
     
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
-        if (debug) {
+        if (DEBUG) {
             log("SessionFilter:DoAfterProcessing");
         }
     }
@@ -94,11 +90,12 @@ public class SessionFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
         
-        if (debug) {
+        if (DEBUG) {
             log("SessionFilter:doFilter()");
         }
         
@@ -107,12 +104,11 @@ public class SessionFilter implements Filter {
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (IOException | ServletException t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
-            t.printStackTrace();
         }
         
         doAfterProcessing(request, response);
@@ -132,6 +128,7 @@ public class SessionFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return the filter configuration object
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -149,16 +146,19 @@ public class SessionFilter implements Filter {
     /**
      * Destroy method for this filter
      */
+    @Override
     public void destroy() {        
     }
 
     /**
      * Init method for this filter
+     * @param filterConfig he filter configuration object
      */
+    @Override
     public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (DEBUG) {                
                 log("SessionFilter:Initializing filter");
             }
         }
@@ -172,7 +172,7 @@ public class SessionFilter implements Filter {
         if (filterConfig == null) {
             return ("SessionFilter()");
         }
-        StringBuffer sb = new StringBuffer("SessionFilter(");
+        StringBuilder sb = new StringBuilder("SessionFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -184,26 +184,26 @@ public class SessionFilter implements Filter {
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
-                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
-
-                // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
-                pw.print("</pre></body>\n</html>"); //NOI18N
-                pw.close();
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream());
+                        PrintWriter pw = new PrintWriter(ps);) {
+                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+                    
+                    // PENDING! Localize this for next official release
+                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                    pw.print(stackTrace);
+                    pw.print("</pre></body>\n</html>"); //NOI18N
+                    pw.close();
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         } else {
             try {
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                t.printStackTrace(ps);
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream())) {
+                    t.printStackTrace(ps);
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -217,7 +217,7 @@ public class SessionFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }
