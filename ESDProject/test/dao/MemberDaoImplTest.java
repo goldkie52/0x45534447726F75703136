@@ -104,11 +104,22 @@ public class MemberDaoImplTest extends BaseDbTestClass {
         assertArrayEquals(expResult, result);
     }
     
-        /**
-     * Test of getAllVerifiedMembers method, of class MemberDaoImpl, when there are verified members in the database.
+    /**
+     * Test of getAllMembers method, of class MemberDaoImpl, when there are no members in the database.
      */
     @Test
-    public void testGetAllVerifiedMembers_MembersPresent() {
+    public void testGetAllMembers_NoMembers() {
+        Member[] expResult = new Member[0];
+        MemberDaoImpl instance = new MemberDaoImpl(connection);
+        Member[] result = instance.getAllMembers();
+        assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getMembers method, of class MemberDaoImpl, when there are members in the database.
+     */
+    @Test
+    public void testGetMembers_MembersPresent() {
         String[] members = new String[] { "test_member1", "test_member2", "test_member3", "test_member4" };
         String[] names = new String[] { "name1", "name2", "name3", "name4" };
         String[] addresses = new String [] {"address1", "address2", "address3", "address4"};
@@ -123,30 +134,21 @@ public class MemberDaoImplTest extends BaseDbTestClass {
             expResult[i] = member;
             addMemberToTestDatabase(member);
         }
+        Member member = createMember("test_member5", "name5", "address5", LocalDate.now(), LocalDate.now(), 10.05);
+        member.setStatus(MemberStatus.APPLIED);
         MemberDaoImpl instance = new MemberDaoImpl(connection);
-        Member[] result = instance.getAllVerifiedMembers(MemberStatus.APPROVED);
-        assertArrayEquals(expResult, result);
-    }
-    
-    /**
-     * Test of getAllMembers method, of class MemberDaoImpl, when there are no members in the database.
-     */
-    @Test
-    public void testGetAllMembers_NoMembers() {
-        Member[] expResult = new Member[0];
-        MemberDaoImpl instance = new MemberDaoImpl(connection);
-        Member[] result = instance.getAllMembers();
+        Member[] result = instance.getMembers(MemberStatus.APPROVED);
         assertArrayEquals(expResult, result);
     }
     
         /**
-     * Test of getAllVerifiedMembers method, of class MemberDaoImpl, when there are no verified members in the database.
+     * Test of getMembers method, of class MemberDaoImpl, when there are no members in the database.
      */
     @Test
     public void testGetAllVerifiedMembers_NoMembers() {
         Member[] expResult = new Member[0];
         MemberDaoImpl instance = new MemberDaoImpl(connection);
-        Member[] result = instance.getAllVerifiedMembers(MemberStatus.APPROVED);
+        Member[] result = instance.getMembers(MemberStatus.APPROVED);
         assertArrayEquals(expResult, result);
     }
 

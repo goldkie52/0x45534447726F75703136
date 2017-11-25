@@ -59,7 +59,7 @@ public class ChargeMembers extends HttpServlet {
         int paymentId = paymentDao.getNextId();
         
         // Find the next memberId
-        Member[] allVerifiedMembers = memberDao.getAllVerifiedMembers(MemberStatus.APPROVED);
+        Member[] allVerifiedMembers = memberDao.getMembers(MemberStatus.APPROVED);
         for (Member member : allVerifiedMembers) {
             Payment payment = new Payment();
             payment.setId(paymentId);

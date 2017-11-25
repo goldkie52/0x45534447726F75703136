@@ -47,7 +47,7 @@ public class ReportTurnover extends HttpServlet {
         
         //Retrieves all claims into system for the current year and all verified members
         Claim[] claims = claimDao.getClaimsFromDate(LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1));
-        Member[] members = memberDao.getAllVerifiedMembers(MemberStatus.APPROVED);
+        Member[] members = memberDao.getMembers(MemberStatus.APPROVED);
         
         //Initialise total for claims in current year
         double totalClaimValue = 0;

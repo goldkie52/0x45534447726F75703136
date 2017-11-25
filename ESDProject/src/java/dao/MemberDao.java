@@ -37,7 +37,7 @@ public interface MemberDao {
      * @param status the status of the member
      * @return all verified members in the system if the operation was a success; otherwise null
      */
-    Member[] getAllVerifiedMembers(MemberStatus status);
+    Member[] getMembers(MemberStatus status);
     
     /**
      * Updates the specified member in the system.
