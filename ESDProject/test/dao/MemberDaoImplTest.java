@@ -125,8 +125,7 @@ public class MemberDaoImplTest extends BaseDbTestClass {
         String[] addresses = new String [] {"address1", "address2", "address3", "address4"};
         LocalDate[] dobs = new LocalDate [] {LocalDate.now(), LocalDate.now(), LocalDate.now(), LocalDate.now()};
         LocalDate[] dors = new LocalDate [] {LocalDate.now(), LocalDate.now(), LocalDate.now(), LocalDate.now()};
-        
-        Double [] balances = new Double [] {10.01, 10.02, 10.03, 10.04};
+        double [] balances = new double [] {10.01, 10.02, 10.03, 10.04};
         Member[] expResult = new Member[members.length];
         for (int i = 0; i < members.length; i++) {
             Member member = createMember(members[i], names[i], addresses[i], dobs[i], dors[i], balances[i]);

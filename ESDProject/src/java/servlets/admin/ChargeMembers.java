@@ -1,19 +1,12 @@
 package servlets.admin;
 
-import dao.MemberDao;
-import dao.MemberDaoImpl;
-import dao.PaymentDao;
-import dao.PaymentDaoImpl;
 import java.io.IOException;
 import java.sql.Connection;
-import java.time.LocalDateTime;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Member;
-import model.MemberStatus;
-import model.Payment;
+import model.TurnoverCalculator;
 
 /**
  * Calculates the annual turnover report and forwards onto report-turnover.jsp.
@@ -37,44 +30,12 @@ public class ChargeMembers extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String stringAmount = request.getParameter("memberAmount");
-        if (stringAmount == null) {
-            request.getRequestDispatcher("/admin/report-turnover.jsp?success=false").forward(request, response);
-            return;
-        }
-
-        double amount;
-        try {
-            amount = Double.parseDouble(stringAmount);
-        } catch (NumberFormatException e) {
-            request.getRequestDispatcher("/admin/report-turnover.jsp?success=false").forward(request, response);
-            return;
-        }
-
         Connection connection = (Connection) request.getServletContext().getAttribute("databaseConnection");
-        MemberDao memberDao = new MemberDaoImpl(connection);
-        PaymentDao paymentDao = new PaymentDaoImpl(connection);
-
-        // Get the next paymentId
-        int paymentId = paymentDao.getNextId();
+        TurnoverCalculator turnoverCalculator = new TurnoverCalculator(connection);
         
-        // Find the next memberId
-        Member[] allVerifiedMembers = memberDao.getMembers(MemberStatus.APPROVED);
-        for (Member member : allVerifiedMembers) {
-            Payment payment = new Payment();
-            payment.setId(paymentId);
-            payment.setMemId(member.getId());
-            payment.setTypeOfPayment("CHARGE");
-            payment.setAmount(amount);
-            LocalDateTime dateTime = LocalDateTime.now();
-            payment.setDate(dateTime.toLocalDate());
-            payment.setTime(dateTime.toLocalTime());
-            if (!paymentDao.addPayment(payment)) {
-                request.getRequestDispatcher("/admin/report-turnover.do?success=false").forward(request, response);
-            }
-            paymentId++;
-        }
-        request.getRequestDispatcher("/admin/report-turnover.do?success=true").forward(request, response);
+        boolean success = turnoverCalculator.chargeMembers();
+        
+        request.getRequestDispatcher("/admin/report-turnover.do?success=" + success).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
