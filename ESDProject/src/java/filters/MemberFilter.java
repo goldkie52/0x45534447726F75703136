@@ -16,7 +16,7 @@ import model.User;
 import model.UserStatus;
 
 /**
- * Filter for member pages - if not logged in or not member will redirect to home
+ * Filter for member pages - if not logged in or not member will redirect to home.
  * @author Rachel Bailey 13006455
  * @author Matthew Carpenter 14012396
  */
@@ -41,28 +41,6 @@ public class MemberFilter implements Filter {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
-        
-    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (DEBUG) {
-            log("MemberFilter:DoBeforeProcessing");
-        }
-
-        // Get the logged in user
-        User loggedInUser = (model.User) ((HttpServletRequest)request).getSession().getAttribute("loggedInUser");
-        
-        // If user is not logged in or not a member, redirect to homepage
-        if(loggedInUser == null || loggedInUser.getStatus() != UserStatus.APPROVED){
-            ((HttpServletResponse)response).sendRedirect("/");
-        }
-    }    
-    
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (DEBUG) {
-            log("MemberFilter:DoAfterProcessing");
-        }
-    }
 
     /**
      *
@@ -82,7 +60,14 @@ public class MemberFilter implements Filter {
             log("MemberFilter:doFilter()");
         }
         
-        doBeforeProcessing(request, response);
+        // Get the logged in user
+        User loggedInUser = (model.User) ((HttpServletRequest)request).getSession().getAttribute("loggedInUser");
+        
+        // If user is not logged in or not a member, redirect to homepage
+        if (loggedInUser == null || loggedInUser.getStatus() == UserStatus.ADMIN) {
+            ((HttpServletResponse)response).sendRedirect("/");
+            return;
+        }
         
         Throwable problem = null;
         try {
@@ -93,8 +78,6 @@ public class MemberFilter implements Filter {
             // rethrow the problem after that.
             problem = t;
         }
-        
-        doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow if it is
         // a known type, otherwise log it.

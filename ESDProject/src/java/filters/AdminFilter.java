@@ -16,7 +16,7 @@ import model.User;
 import model.UserStatus;
 
 /**
- * Filter for admin pages - if not logged in or not admin will redirect to home
+ * Filter for admin pages - if not logged in or not admin will redirect to home.
  * @author James Broadberry 14007903
  * @author Matthew Carpenter 14012396
  */
@@ -41,28 +41,6 @@ public class AdminFilter implements Filter {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
-        
-    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (DEBUG) {
-            log("AdminFilter:DoBeforeProcessing");
-        }
-
-        // Get logged in user
-        User loggedInUser = (model.User) ((HttpServletRequest)request).getSession().getAttribute("loggedInUser");
-        
-        // If the user is not logged in or not an admin, redirect to homepage
-        if(loggedInUser == null || loggedInUser.getStatus() != UserStatus.ADMIN){
-            ((HttpServletResponse)response).sendRedirect("/");
-        }
-    }    
-    
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (DEBUG) {
-            log("AdminFilter:DoAfterProcessing");
-        }
-    }
 
     /**
      *
@@ -82,7 +60,14 @@ public class AdminFilter implements Filter {
             log("AdminFilter:doFilter()");
         }
         
-        doBeforeProcessing(request, response);
+        // Get logged in user
+        User loggedInUser = (model.User) ((HttpServletRequest)request).getSession().getAttribute("loggedInUser");
+        
+        // If the user is not logged in or not an admin, redirect to homepage
+        if(loggedInUser == null || loggedInUser.getStatus() != UserStatus.ADMIN){
+            ((HttpServletResponse)response).sendRedirect("/");
+            return;
+        }
         
         Throwable problem = null;
         try {
@@ -93,8 +78,6 @@ public class AdminFilter implements Filter {
             // rethrow the problem after that.
             problem = t;
         }
-        
-        doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.

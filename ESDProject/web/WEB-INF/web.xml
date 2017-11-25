@@ -12,6 +12,14 @@
         <filter-name>SessionFilter</filter-name>
         <filter-class>filters.SessionFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>FullMemberFilter</filter-name>
+        <filter-class>filters.FullMemberFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>MemberFilter</filter-name>
+        <filter-class>filters.MemberFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>SessionFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -20,13 +28,13 @@
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
-        <filter>
-        <filter-name>MemberFilter</filter-name>
-        <filter-class>filters.MemberFilter</filter-class>
-    </filter>
     <filter-mapping>
         <filter-name>MemberFilter</filter-name>
         <url-pattern>/member/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>FullMemberFilter</filter-name>
+        <url-pattern>/member/make-claim.do</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>Logout</servlet-name>
