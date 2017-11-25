@@ -1,6 +1,7 @@
 <%-- 
     Document   : Member view claims page
     Author     : James Broadberry 14007903
+    Author     : Matthew Carpenter 14012396
 --%>
 
 <%@page import="model.ClaimStatus"%>
@@ -48,10 +49,7 @@
                 </thead>
                 <tbody>
                     <% Claim[] claims = (Claim[]) request.getAttribute("claims");
-                        for (Claim claim : claims
-
-                        
-                            ) {
+                        for (Claim claim : claims) {
                     %>
                     <tr>
                         <td><%= claim.getDate().toString()%> </td>

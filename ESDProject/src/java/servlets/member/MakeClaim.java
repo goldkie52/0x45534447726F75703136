@@ -20,6 +20,8 @@ import model.User;
  */
 public class MakeClaim extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,43 +34,44 @@ public class MakeClaim extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        // Get connection from Servlet Context
+        
+        User loggedInUser = (User)request.getSession().getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            response.sendRedirect("/");
+            return;
+        }
+        
         String stringAmount = request.getParameter("amount");
         if (stringAmount == null) {
             request.getRequestDispatcher("/member/claims/make-claim.jsp").forward(request, response);
+            return;
         }
         
-        double amount = 0;
+        double amount;
         try {
             amount = Double.parseDouble(stringAmount);
         } catch (NumberFormatException e) {
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?userInput=invalid").forward(request, response);
+            request.getRequestDispatcher("/member/claims/make-claim.jsp?amount=invalid").forward(request, response);
+            return;
+        }
+        
+        if (amount == 0) {
+            request.getRequestDispatcher("/member/claims/make-claim.jsp?amount=invalid").forward(request, response);
+            return;
         }
         
         String stringRationale = request.getParameter("rationale");
         if (stringRationale == null) {
-            request.getRequestDispatcher("/member/claims/make-claim.jsp").forward(request, response);
+            request.getRequestDispatcher("/member/claims/make-claim.jsp?rationale=invalid").forward(request, response);
+            return;
         }
         
-        User loggedInUser = null;
-        if (request.getSession().getAttribute("loggedInUser") != null) {
-            loggedInUser = ((User) request.getSession().getAttribute("loggedInUser"));
-        }
-        else{
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?userInput=invalid").forward(request, response);
-        }
-        
+        // Get connection from Servlet Context
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         ClaimDao claimDao = new ClaimDaoImpl(connection);
         
-        // Find the next paymentId
-        Claim[] allClaim = claimDao.getAllClaims();
-        int claimId = 0;
-        for (Claim claim : allClaim) {
-            if (claim.getId() >= claimId) {
-                claimId = claim.getId() + 1;
-            }
-        }
+        // Get the next claimId
+        int claimId = claimDao.getNextId();
         
         Claim claim = new Claim();
         claim.setId(claimId);
@@ -80,10 +83,9 @@ public class MakeClaim extends HttpServlet {
         claim.setAmount(amount);
         
         if (!claimDao.addClaim(claim)) {
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?databaseReturn=invalid").forward(request, response);
-        }
-        else{
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?databaseReturn=valid").forward(request, response);
+            request.getRequestDispatcher("/member/claims/make-claim.jsp?success=false").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/member/claims/make-claim.jsp?success=true").forward(request, response);
         }
     }
 
@@ -125,5 +127,7 @@ public class MakeClaim extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    // </editor-fold>
 
 }

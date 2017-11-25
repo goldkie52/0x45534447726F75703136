@@ -22,29 +22,29 @@
                     </div>
                 </div>
                 <div class="row" id="alerts">
-                <%
-                    // Check if the query string has set invalid to true, and if it has, display an error message
-                    if (request.getParameter("user") != null && request.getParameter("user").equals("invalid")) {
-                %>
-                        <div class="alert alert-danger" role="alert">
-                            Someone with your name is already registered.
-                        </div>
-                <%
-                    }
-                %>
-                
-                 <%
-                    // Check if the query string has set invalid to true, and if it has, display an error message
-                    if (request.getParameter("dob") != null && request.getParameter("dob").equals("invalid")) {
-                %>
-                
-                        <div class="alert alert-danger" role="alert">
-                            Please enter a valid date.
-                        </div>
-                
-                <%
-                    }
-                %>
+                    <%
+                        // Check if the query string has set invalid to true, and if it has, display an error message
+                        if (request.getParameter("user") != null && request.getParameter("user").equals("invalid")) {
+                    %>
+                    <div class="alert alert-danger" role="alert">
+                        Someone with your name is already registered.
+                    </div>
+                    <%
+                        }
+                    %>
+
+                    <%
+                        // Check if the query string has set invalid to true, and if it has, display an error message
+                        if (request.getParameter("dob") != null && request.getParameter("dob").equals("invalid")) {
+                    %>
+
+                    <div class="alert alert-danger" role="alert">
+                        Please enter a valid date.
+                    </div>
+
+                    <%
+                        }
+                    %>
                 </div>
                 <div class="row">
                     <div class="form-group">

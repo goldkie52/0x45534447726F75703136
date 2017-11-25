@@ -1,12 +1,9 @@
 package filters;
 
-import dao.UserDao;
-import dao.UserDaoImpl;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Connection;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -16,13 +13,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.User;
+import model.UserStatus;
 
 /**
- * Filter for site to ensure user is still valid during session.
- * @author Kieran Harris 14010534
+ * Filter for view-claim member pages - if not an approved member redirects to home.
  * @author Matthew Carpenter 14012396
  */
-public class SessionFilter implements Filter {
+public class FullMemberFilter implements Filter {
     
     // <editor-fold defaultstate="collapsed" desc="Variables">
     
@@ -37,8 +34,8 @@ public class SessionFilter implements Filter {
     
     // <editor-fold defaultstate="collapsed" desc="Constructor">
     
-    public SessionFilter() {
-    }
+    public FullMemberFilter() {
+    }    
     
     // </editor-fold>
     
@@ -59,30 +56,16 @@ public class SessionFilter implements Filter {
             throws IOException, ServletException {
         
         if (DEBUG) {
-            log("SessionFilter:doFilter()");
+            log("FullMemberFilter:doFilter()");
         }
         
-        //Get logged in user from session
+        // Get the logged in user
         User loggedInUser = (model.User) ((HttpServletRequest)request).getSession().getAttribute("loggedInUser");
         
-        if (loggedInUser != null) {
-            // Get connection from Servlet Context
-            Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
-            
-            // Create a UserDao to access the User table
-            UserDao userDao = new UserDaoImpl(connection);
-            User userInDatabase = userDao.getUser(loggedInUser.getId());
-            
-            if (userInDatabase == null) {
-                ((HttpServletRequest)request).getSession().invalidate();
-                ((HttpServletResponse)response).sendRedirect("/");
-                return;
-            }
-            
-            if (!loggedInUser.equals(userInDatabase)) {
-                ((HttpServletRequest)request).getSession().setAttribute("loggedInUser", userInDatabase);
-                return;
-            }
+        // If user is not logged in or not a member, redirect to homepage
+        if (loggedInUser == null || loggedInUser.getStatus() != UserStatus.APPROVED) {
+            ((HttpServletResponse)response).sendRedirect("/");
+            return;
         }
         
         Throwable problem = null;
@@ -118,8 +101,7 @@ public class SessionFilter implements Filter {
 
     /**
      * Set the filter configuration object for this filter.
-     *
-     * @param filterConfig The filter configuration object
+     * @param filterConfig the filter configuration object
      */
     public void setFilterConfig(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
@@ -134,14 +116,14 @@ public class SessionFilter implements Filter {
 
     /**
      * Init method for this filter
-     * @param filterConfig he filter configuration object
+     * @param filterConfig the filter configuration object
      */
     @Override
     public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (DEBUG) {                
-                log("SessionFilter:Initializing filter");
+                log("FullMemberFilter:Initializing filter");
             }
         }
     }
@@ -152,9 +134,9 @@ public class SessionFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("SessionFilter()");
+            return ("FullMemberFilter()");
         }
-        StringBuilder sb = new StringBuilder("SessionFilter(");
+        StringBuilder sb = new StringBuilder("FullMemberFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

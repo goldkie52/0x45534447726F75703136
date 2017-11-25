@@ -16,14 +16,15 @@ import model.User;
 import model.UserStatus;
 
 /**
- * Filter for member pages - if not logged in or not member will redirect to home
+ * Filter for member pages - if not logged in or not member will redirect to home.
  * @author Rachel Bailey 13006455
+ * @author Matthew Carpenter 14012396
  */
 public class MemberFilter implements Filter {
     
     // <editor-fold defaultstate="collapsed" desc="Variables">
     
-    private static final boolean debug = true;
+    private static final boolean DEBUG = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
@@ -40,28 +41,6 @@ public class MemberFilter implements Filter {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
-        
-    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("MemberFilter:DoBeforeProcessing");
-        }
-
-        // Get the logged in user
-        User loggedInUser = (model.User) ((HttpServletRequest)request).getSession().getAttribute("loggedInUser");
-        
-        // If user is not logged in or not a member, redirect to homepage
-        if(loggedInUser == null || loggedInUser.getStatus() != UserStatus.APPROVED){
-            ((HttpServletResponse)response).sendRedirect("/");
-        }
-    }    
-    
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("MemberFilter:DoAfterProcessing");
-        }
-    }
 
     /**
      *
@@ -72,28 +51,33 @@ public class MemberFilter implements Filter {
      * @exception IOException if input/output error occurs
      * @exception ServletException if servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
         
-        if (debug) {
+        if (DEBUG) {
             log("MemberFilter:doFilter()");
         }
         
-        doBeforeProcessing(request, response);
+        // Get the logged in user
+        User loggedInUser = (model.User) ((HttpServletRequest)request).getSession().getAttribute("loggedInUser");
+        
+        // If user is not logged in or not a member, redirect to homepage
+        if (loggedInUser == null || loggedInUser.getStatus() == UserStatus.ADMIN) {
+            ((HttpServletResponse)response).sendRedirect("/");
+            return;
+        }
         
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (IOException | ServletException t) {
             // If an exception is thrown in the filter chain,
             // we want to execute our after processing, and
             // rethrow the problem after that.
             problem = t;
-            t.printStackTrace();
         }
-        
-        doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow if it is
         // a known type, otherwise log it.
@@ -110,6 +94,7 @@ public class MemberFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return the filter configuration object
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -127,16 +112,19 @@ public class MemberFilter implements Filter {
     /**
      * Destroy method for this filter
      */
+    @Override
     public void destroy() {        
     }
 
     /**
      * initialization method for this filter
+     * @param filterConfig the filter configuration object
      */
+    @Override
     public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (DEBUG) {                
                 log("MemberFilter:Initializing filter");
             }
         }
@@ -150,7 +138,7 @@ public class MemberFilter implements Filter {
         if (filterConfig == null) {
             return ("MemberFilter()");
         }
-        StringBuffer sb = new StringBuffer("MemberFilter(");
+        StringBuilder sb = new StringBuilder("MemberFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -162,26 +150,26 @@ public class MemberFilter implements Filter {
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
-                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
-
-                // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
-                pw.print("</pre></body>\n</html>"); //NOI18N
-                pw.close();
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream());
+                        PrintWriter pw = new PrintWriter(ps);) {
+                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+                    
+                    // PENDING! Localize this for next official release
+                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                    pw.print(stackTrace);
+                    pw.print("</pre></body>\n</html>"); //NOI18N
+                    pw.close();
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         } else {
             try {
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                t.printStackTrace(ps);
-                ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream())) {
+                    t.printStackTrace(ps);
+                }
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -195,7 +183,7 @@ public class MemberFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }

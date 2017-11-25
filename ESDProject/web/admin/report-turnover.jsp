@@ -2,6 +2,7 @@
     Document   : Admin annual turnover page
     Author     : James Broadberry 14007903
     Author     : Rachel Bailey 13006455
+    Author     : Matthew Carpenter 14012396
 --%>
 
 <%@page import="model.Member"%>
@@ -55,31 +56,30 @@
                         <% Claim[] claims = (Claim[]) request.getAttribute("turnoverClaims");
                             Member[] members = (Member[]) request.getAttribute("turnoverMembers");
                             for (Claim claim : claims) {
-
                         %>
                         <tr>
-                            <td><% out.print(claim.getMemId()); %></td>
-                            <td><% out.print(claim.getDate().toString());%> </td>
-                            <td><% out.print(claim.getRationale()); %></td>
-                            <td><% out.print(claim.getStatus().toString()); %></td>
-                            <td>£<% out.print(String.format("%.2f", claim.getAmount())); %></td>
+                            <td><%= claim.getMemId()%></td>
+                            <td><%= claim.getDate().toString()%> </td>
+                            <td><%= claim.getRationale()%></td>
+                            <td><%= claim.getStatus().toString()%></td>
+                            <td>£<%= String.format("%.2f", claim.getAmount())%></td>
 
                         </tr>
-                        <%}%>
+                        <%  }%>
                     </tbody>
                 </table>
 
             </div>
 
             <div class="row">       
-                <h5>Annual Turnover: £<% out.print(String.format("%.2f", (Double) request.getAttribute("totalClaimValue")));%></h5>  
+                <h5>Annual Turnover: £<%= String.format("%.2f", (Double) request.getAttribute("totalClaimValue"))%></h5>  
             </div>
             <div class="row">
                 <form  class="form-horizontal mx-auto xyz-form-width" role="form" method="POST" action="/admin/charge-members.do">
                     <input type="hidden" name="memberAmount" class="form-control" id="memberAmount" value="<%= (Double) request.getAttribute("memberAmount")%>"> 
                     <button type="submit" class="btn btn-success form-check"> Charge Members</button>
                 </form>
-                <h5 class="xyz-line-height-40 ml-1">Annual Member Charges: £<% out.print(String.format("%.2f", (Double) request.getAttribute("memberAmount")));%></h5>
+                <h5 class="xyz-line-height-40 ml-1">Annual Member Charges: £<%= String.format("%.2f", (Double) request.getAttribute("memberAmount"))%></h5>
             </div>
 
         </div>       

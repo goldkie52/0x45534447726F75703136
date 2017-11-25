@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ProcessMember extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -77,5 +79,7 @@ public class ProcessMember extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    // </editor-fold>
 
 }

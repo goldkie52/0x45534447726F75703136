@@ -18,7 +18,7 @@ public class Payment implements Serializable {
     private int id;
     private String memId;
     private String typeOfPayment;
-    private float amount;
+    private double amount;
     private LocalDate date;
     private LocalTime time;
     
@@ -78,7 +78,7 @@ public class Payment implements Serializable {
      * Gets the value of the amount property.
      * @return the amount property
      */
-    public float getAmount() {
+    public double getAmount() {
         return amount;
     }
 
@@ -86,7 +86,7 @@ public class Payment implements Serializable {
      * Sets the value of the amount property.
      * @param amount the value to set the amount property to
      */
-    public void setAmount(float amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -123,9 +123,9 @@ public class Payment implements Serializable {
     }
 
     
-        // <editor-fold defaultstate="collapsed" desc="Overrides">
+    // <editor-fold defaultstate="collapsed" desc="Overrides">
     
- @Override
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -140,7 +140,7 @@ public class Payment implements Serializable {
         if (this.id != other.id) {
             return false;
         }
-        if (Float.floatToIntBits(this.amount) != Float.floatToIntBits(other.amount)) {
+        if (Double.doubleToLongBits(this.amount) != Double.doubleToLongBits(other.amount)) {
             return false;
         }
         if (!Objects.equals(this.memId, other.memId)) {
@@ -165,7 +165,7 @@ public class Payment implements Serializable {
         hash = 67 * hash + this.id;
         hash = 67 * hash + Objects.hashCode(this.memId);
         hash = 67 * hash + Objects.hashCode(this.typeOfPayment);
-        hash = 67 * hash + Float.floatToIntBits(this.amount);
+        hash = 67 * hash + (int) (Double.doubleToLongBits(this.amount) ^ (Double.doubleToLongBits(this.amount) >>> 32));
         hash = 67 * hash + Objects.hashCode(this.date);
         hash = 67 * hash + Objects.hashCode(this.time);
         return hash;

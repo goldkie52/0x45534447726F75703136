@@ -3,7 +3,6 @@ package servlets.admin;
 import dao.MemberDao;
 import dao.MemberDaoImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +17,8 @@ import model.Member;
  */
 public class ViewMembers extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,16 +31,18 @@ public class ViewMembers extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         //Get connection
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        
         //Creates Member DAO and retrieves all members into system
         MemberDao memberDao = new MemberDaoImpl(connection);
         Member[] members = memberDao.getAllMembers();
+        
         //Sets members into attribute
         request.setAttribute("members", members);
         request.getRequestDispatcher("/admin/view-members.jsp").forward(request, response);
     }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -79,5 +82,7 @@ public class ViewMembers extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    // </editor-fold>
 
 }

@@ -7,14 +7,14 @@
 <%@page import="model.Payment"%>
 <!DOCTYPE html>
 <html>
-     <head>
+    <head>
         <title>XYZ - All Payments</title>
         <jsp:include page="/includes/references.jsp" />
-     </head>
+    </head>
 
     <body>
         <jsp:include page="/includes/nav.jsp" />
-        
+
         <div class="container">
             <h1 class="mb-3">All Payments</h1>
             <table class="table table-bordered table-hover">
@@ -27,16 +27,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% Payment[] payments = (Payment[])request.getAttribute("payments");
+                    <% Payment[] payments = (Payment[]) request.getAttribute("payments");
                         for (Payment payment : payments) {
                     %>
                     <tr>
-                        <td><% out.print(payment.getMemId()); %></td>
-                        <td><% out.print(payment.getTypeOfPayment()); %></td>
-                        <td>£<% out.print(String.format("%.2f", payment.getAmount())); %></td>
-                        <td><% out.print(payment.getDate().toString() + " " + payment.getTime().toString()); %></td>
+                        <td><%= payment.getMemId()%></td>
+                        <td><%= payment.getTypeOfPayment()%></td>
+                        <td>£<%= String.format("%.2f", payment.getAmount())%></td>
+                        <td><%= payment.getDate().toString() + " " + payment.getTime().toString()%></td>
                     </tr>
-                    <% } %>
+                    <% }%>
                 </tbody>
             </table>
         </div>        

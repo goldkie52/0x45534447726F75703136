@@ -22,10 +22,13 @@ import model.MemberStatus;
 public class MemberDaoImpl implements MemberDao {
 
     // <editor-fold defaultstate="collapsed" desc="Variables">
+    
     private final Connection connection;
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Constructor">
+    
     /**
      * Initializes a new instance of the MemberDaoImpl class.
      *
@@ -36,7 +39,9 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     @Override
     public boolean addMember(Member member) {
         try (PreparedStatement prepStatement = connection.prepareStatement("INSERT INTO MEMBERS VALUES (?, ?, ?, ?, ?, ?, ?)")) {
@@ -98,7 +103,7 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Member[] getAllVerifiedMembers(MemberStatus status) {
+    public Member[] getMembers(MemberStatus status) {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM MEMBERS WHERE \"status\" = ?")) {
             prepStatement.setString(1, status.toString());
             ArrayList<Member> members = new ArrayList<>();
@@ -150,4 +155,5 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     // </editor-fold>
+    
 }

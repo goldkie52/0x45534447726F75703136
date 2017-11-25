@@ -3,6 +3,7 @@
     Author     : James Broadberry 14007903
 --%>
 
+<%@page import="model.UserStatus"%>
 <%@page import="java.util.Hashtable"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.util.Map.Entry"%>
@@ -25,7 +26,7 @@
                 // Create dynamic links
                 if (request.getSession().getAttribute("loggedInUser") != null) {
                     model.UserStatus loggedInStatus = ((model.User) request.getSession().getAttribute("loggedInUser")).getStatus();
-                    Map<String, String> links = new LinkedHashMap<String, String>();
+                    Map<String, String> links = new LinkedHashMap();
 
                     // Generate links based on status
                     switch (loggedInStatus) {
@@ -41,8 +42,11 @@
                             links.put("View Payments", "/member/view-payments.do");
                             links.put("Make Payment", "/member/make-payment.do");
                             links.put("View Claims", "/member/view-claims.do");
-                            links.put("Make Claim", "/member/make-claim.do");
                             break;
+                    }
+                    
+                    if (loggedInStatus == UserStatus.APPROVED) {
+                        links.put("Make Claim", "/member/make-claim.do");
                     }
 
                     // Write all links out
@@ -61,8 +65,8 @@
         <ul class="navbar-nav ml-auto">
             <li class="navbar-item">
                 <span class="navbar-text p-2">
-                    <%
-                        out.println("Signed in as " + ((model.User) request.getSession().getAttribute("loggedInUser")).getId());
+                    <%=
+                        "Signed in as " + ((model.User) request.getSession().getAttribute("loggedInUser")).getId()
                     %>
                 </span>
             </li>

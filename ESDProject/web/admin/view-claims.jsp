@@ -2,6 +2,7 @@
     Document   : Admin view all claims page
     Author     : James Broadberry 14007903
     Author     : Rachel Bailey 13006455
+    Author     : Matthew Carpenter 14012396
 --%>
 
 <%@page import="model.ClaimStatus"%>
@@ -29,7 +30,7 @@
                     Error processing claim.
                 </div>
                 <%
-                        } else if (success.equals("true")) {
+                } else if (success.equals("true")) {
                 %>
                 <div class="alert alert-success w-100" role="alert">
                     Claim processed successfully.
@@ -50,10 +51,7 @@
                 </thead>
                 <tbody>
                     <% Claim[] claims = (Claim[]) request.getAttribute("claims");
-                        for (Claim claim : claims
-
-                        
-                            ) {
+                        for (Claim claim : claims) {
                     %>
                     <tr>
                         <td><%= claim.getMemId()%></td>
@@ -71,7 +69,6 @@
                                     out.print(claim.getStatus().toString());
                                 }%></td>
                         <td>£<%= String.format("%.2f", claim.getAmount())%></td>
-
                     </tr>
                     <% }%>
                 </tbody>
