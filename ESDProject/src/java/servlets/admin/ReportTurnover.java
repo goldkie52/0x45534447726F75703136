@@ -5,7 +5,6 @@ import dao.ClaimDaoImpl;
 import dao.MemberDao;
 import dao.MemberDaoImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.Month;
@@ -19,11 +18,13 @@ import model.MemberStatus;
 
 /**
  * Calculates the annual turnover report and forwards onto report-turnover.jsp.
- *
  * @author Matthew Carpenter 14012396
+ * @author Rachel Bailey 13006455
  */
 public class ReportTurnover extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,22 +37,26 @@ public class ReportTurnover extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         // Get connection
         Connection connection = (Connection) request.getServletContext().getAttribute("databaseConnection");
+        
         //Creates Claim DAO and Member DAO
         ClaimDao claimDao = new ClaimDaoImpl(connection);
         MemberDao memberDao = new MemberDaoImpl(connection);
+        
         //Retrieves all claims into system for the current year and all verified members
         Claim[] claims = claimDao.getClaimsFromDate(LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1));
         Member[] members = memberDao.getAllVerifiedMembers(MemberStatus.APPROVED);
+        
         //Initialise total for claims in current year
         double totalClaimValue = 0;
-        //For each of the claims, totals the claim amount
+        //Total the claim amounts
         for (Claim claim : claims) {
             totalClaimValue += claim.getAmount();
         }
         
-        //Sets members into attribute
+        //Set attributes
         request.setAttribute("turnoverClaims", claims);
         request.setAttribute("turnoverMembers", members);
         request.setAttribute("totalClaimValue", totalClaimValue);
@@ -99,4 +104,6 @@ public class ReportTurnover extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    // </editor-fold>
+    
 }

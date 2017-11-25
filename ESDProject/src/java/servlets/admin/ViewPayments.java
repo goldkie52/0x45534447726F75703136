@@ -5,7 +5,6 @@ import dao.PaymentDaoImpl;
 import java.io.IOException;
 import java.sql.Connection;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +16,8 @@ import model.Payment;
  */
 public class ViewPayments extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,11 +30,14 @@ public class ViewPayments extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         // Get connection from Servlet Context
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        
         // Create DAO and get all payments in system
         PaymentDao paymentDao = new PaymentDaoImpl(connection);
         Payment[] payments = paymentDao.getAllPayments();
+        
         // Set payments into attribute and forward onto view
         request.setAttribute("payments", payments);
         request.getRequestDispatcher("/admin/view-payments.jsp").forward(request, response);
@@ -78,4 +82,6 @@ public class ViewPayments extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    // </editor-fold>
+    
 }

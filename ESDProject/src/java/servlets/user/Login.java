@@ -34,6 +34,7 @@ public class Login extends HttpServlet {
         
         if (username == null || password == null) {
             request.getRequestDispatcher("/user/login.jsp").forward(request, response);
+            return;
         }
         
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");

@@ -17,6 +17,8 @@ import model.Claim;
  */
 public class ViewClaims extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,15 +31,17 @@ public class ViewClaims extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         //Get connection
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        
         //Creates claim DAO and retrieves all claims into system
         ClaimDao claimDao = new ClaimDaoImpl(connection);
         Claim[] claims = claimDao.getAllClaims();
+        
         //Sets claims into attribute
         request.setAttribute("claims", claims);
         request.getRequestDispatcher("/admin/view-claims.jsp").forward(request, response);
-    
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -79,4 +83,6 @@ public class ViewClaims extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    // </editor-fold>
+    
 }

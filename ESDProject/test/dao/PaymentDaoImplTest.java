@@ -95,7 +95,7 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
         int[] payments = new int[]{1, 2, 3, 4};
         String[] memIds = new String[]{"memId1", "memId2", "memId3", "memId4"};
         String[] typeOfPayments = new String[]{"FEE", "FEE", "FEE", "FEE"};
-        float[] amounts = new float[]{10, 10 , 10, 10};
+        double[] amounts = new double[]{10, 10 , 10, 10};
         LocalDate[] dates = new LocalDate[]{LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07")};
         LocalTime[] times = new LocalTime[]{LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21")};
         
@@ -156,7 +156,7 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
         int[] payments = new int[]{1, 2, 3};
         String[] memIds = new String[]{"memId1", "memId2"};
         String[] typeOfPayments = new String[]{"FEE", "FEE", "FEE"};
-        float[] amounts = new float[]{10, 10 , 10};
+        double[] amounts = new double[]{10, 10 , 10};
         LocalDate[] dates = new LocalDate[]{LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07")};
         LocalTime[] times = new LocalTime[]{LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21")};
         
@@ -176,7 +176,7 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
 
     // </editor-fold>
     
-    private Payment createPayment(int id, String memId, String typeOfPayment, float amount, LocalDate date, LocalTime time) {
+    private Payment createPayment(int id, String memId, String typeOfPayment, double amount, LocalDate date, LocalTime time) {
         Payment payment = new Payment();
         payment.setId(id);
         payment.setMemId(memId);
@@ -195,10 +195,9 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
                     int id = queryResult.getInt("id");
                     String memId = queryResult.getString("mem_id");
                     String typeOfPayment = queryResult.getString("type_of_payment").trim();
-                    float amount = queryResult.getFloat("amount");
+                    double amount = queryResult.getDouble("amount");
                     LocalDate date = queryResult.getDate("date").toLocalDate();
                     LocalTime time = queryResult.getTime("time").toLocalTime();
-
                     return payment.getId() == id && payment.getMemId().equals(memId) && payment.getTypeOfPayment().equals(typeOfPayment) && payment.getAmount() == amount && payment.getDate().equals(date) && payment.getTime().equals(time);
                 }
             }
@@ -213,7 +212,7 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
             prepStatement.setInt(1, payment.getId());
             prepStatement.setString(2, payment.getMemId());
             prepStatement.setString(3, payment.getTypeOfPayment());
-            prepStatement.setFloat(4, payment.getAmount());
+            prepStatement.setDouble(4, payment.getAmount());
             prepStatement.setDate(5, Date.valueOf(payment.getDate()));
             prepStatement.setTime(6, Time.valueOf(payment.getTime()));
             return prepStatement.executeUpdate() > 0;

@@ -21,7 +21,7 @@ public interface PaymentDao {
     
     /**
      * Gets the payment with the specified id.
-     * @param payment the id of the payment to get
+     * @param id the id of the payment to get
      * @return the member with the specified id if the operation was a success; otherwise null
      */
     public Payment getPayment(int id);
@@ -34,6 +34,7 @@ public interface PaymentDao {
     
     /**
      * Gets all the Payments for a specified memId
+     * @param memId the member id to get payments for
      * @return all payments  for a specified memId if the operation was a success; otherwise null
      */
     public Payment[] getPaymentsForMember(String memId);

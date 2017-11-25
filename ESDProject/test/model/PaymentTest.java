@@ -164,13 +164,13 @@ public class PaymentTest {
     @Test
     public void testGetAmount() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Payment instance = new Payment();
-        float expResult = 10.0f;
+        double expResult = 10.0f;
         
         final Field field = instance.getClass().getDeclaredField("amount");
         field.setAccessible(true);
         field.set(instance, expResult);
         
-        float result = instance.getAmount();
+        double result = instance.getAmount();
         assertEquals(expResult, result, 0.0001);
     }
     
@@ -181,7 +181,7 @@ public class PaymentTest {
      */
     @Test
     public void testSetAmount() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
-        float amount = 10.0f;
+        double amount = 10.0f;
         Payment instance = new Payment();
         instance.setAmount(amount);
         
@@ -189,7 +189,7 @@ public class PaymentTest {
         field.setAccessible(true);
         Object obj = field.get(instance);
         
-        assertEquals(amount, (float) obj, 0.0001);
+        assertEquals(amount, (double)obj, 0.0001);
     }
     
     /**

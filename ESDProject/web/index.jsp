@@ -2,6 +2,7 @@
     Document   : Main home page
     Author     : James Broadberry 14007903
     Author     : Kieran Harris 14010534
+    Author     : Matthew Carpenter 14012396
 --%>
 
 <%@page import="model.User"%>
@@ -28,7 +29,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
 
-                    <strong>Account created</strong><br/>Username: <% out.print(loggedInUser.getId()); %><br/>Password: <% out.print(loggedInUser.getPassword()); %>
+                    <strong>Account created</strong><br/>Username: <%= loggedInUser.getId() %><br/>Password: <%= loggedInUser.getPassword() %>
                 </div>
 
             <%

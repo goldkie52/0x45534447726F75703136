@@ -18,6 +18,8 @@ import model.User;
  */
 public class ViewClaims extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,15 +32,17 @@ public class ViewClaims extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        User loggedInUser = (User) request.getSession().getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            response.sendRedirect("/");
+            return;
+        }
+        
         // Get connection from Servlet Context
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         // Create DAO and get all payments in system
         ClaimDao claimDao = new ClaimDaoImpl(connection);
-        
-        User loggedInUser = null;
-        if (request.getSession().getAttribute("loggedInUser") != null) {
-            loggedInUser = ((User) request.getSession().getAttribute("loggedInUser"));
-        }
         
         //DOUBLE CHECK CALL IS CORRECT!
         Claim[] claims = claimDao.getClaims(loggedInUser.getId());
@@ -86,5 +90,7 @@ public class ViewClaims extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    // </editor-fold>
 
 }

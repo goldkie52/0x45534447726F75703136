@@ -26,31 +26,31 @@
                     if (request.getParameter("invalid") != null && request.getParameter("invalid").equals("true")) {
                 %>
                 <div class="row">
-                        <div class="alert alert-danger" role="alert">
-                            Incorrect username or password.
-                        </div>
+                    <div class="alert alert-danger" role="alert">
+                        Incorrect username or password.
+                    </div>
                 </div>
                 <%
                     }
                 %>
                 <div class="row">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon"><i class="fa fa-user-circle"></i></div>
-                                <input type="text" name="username" class="form-control" id="username" placeholder="Username" required="" autofocus="" autocomplete="off">
-                            </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-user-circle"></i></div>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Username" required="" autofocus="" autocomplete="off">
                         </div>
+                    </div>
                 </div>
                 <div class="row">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
-                                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required="" autocomplete="off">
-                            </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Password" required="" autocomplete="off">
                         </div>
+                    </div>
                 </div>
                 <div class="row">
-                        <button type="submit" class="btn btn-success width-100 form-check">Login</button>
+                    <button type="submit" class="btn btn-success width-100 form-check">Login</button>
                 </div>
                 <div class="row">
                     <div class="mx-auto">

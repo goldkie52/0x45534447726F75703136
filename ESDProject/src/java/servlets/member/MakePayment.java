@@ -3,25 +3,24 @@ package servlets.member;
 import dao.PaymentDao;
 import dao.PaymentDaoImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Payment;
 import model.User;
-import sun.util.calendar.CalendarUtils;
 
 /**
  * Creates a new payment for the member from the request sent by make-payment.jsp.
  * @author Matthew Carpenter 14012396
+ * @author Kieran Harris 14010534
  */
 public class MakePayment extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,27 +33,33 @@ public class MakePayment extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        // Get connection from Servlet Context
+        
+        User loggedInUser = (User)request.getSession().getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            response.sendRedirect("/");
+            return;
+        }
+        
         String stringAmount = request.getParameter("amount");
         if (stringAmount == null) {
             request.getRequestDispatcher("/member/payments/make-payment.jsp").forward(request, response);
+            return;
         }
         
-        float amount = 0;
+        double amount;
         try {
-            amount = Float.parseFloat(stringAmount);
+            amount = Double.parseDouble(stringAmount);
         } catch (NumberFormatException e) {
-            request.getRequestDispatcher("/member/payments/make-payment.jsp?userInput=invalid").forward(request, response);
+            request.getRequestDispatcher("/member/payments/make-payment.jsp?amount=invalid").forward(request, response);
+            return;
         }
         
-        User loggedInUser = null;
-        if (request.getSession().getAttribute("loggedInUser") != null) {
-            loggedInUser = ((User) request.getSession().getAttribute("loggedInUser"));
-        }
-        else{
-            request.getRequestDispatcher("/member/payments/make-payment.jsp?userInput=invalid").forward(request, response);
+        if (amount == 0) {
+            request.getRequestDispatcher("/member/payments/make-payment.jsp?amount=invalid").forward(request, response);
+            return;
         }
         
+        // Get connection from Servlet Context
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         PaymentDao paymentDao = new PaymentDaoImpl(connection);
         
@@ -77,10 +82,9 @@ public class MakePayment extends HttpServlet {
         payment.setTime(dateTime.toLocalTime());
         
         if (!paymentDao.addPayment(payment)) {
-            request.getRequestDispatcher("/member/payments/make-payment.jsp?databaseReturn=invalid").forward(request, response);
-        }
-        else{
-            request.getRequestDispatcher("/member/payments/make-payment.jsp?databaseReturn=valid").forward(request, response);
+            request.getRequestDispatcher("/member/payments/make-payment.jsp?success=false").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/member/payments/make-payment.jsp?success=true").forward(request, response);
         }
     }
 
@@ -122,5 +126,7 @@ public class MakePayment extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    // </editor-fold>
 
 }

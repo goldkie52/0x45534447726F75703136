@@ -1,6 +1,7 @@
 <%-- 
     Document   : Member view payments page
     Author     : James Broadberry 14007903
+    Author     : Matthew Carpenter 14012396
 --%>
 
 <%@page import="model.Payment"%>
@@ -20,7 +21,7 @@
                     <h1>Your Payments</h1>
                 </div>
                 <div class="col ml-auto">
-                    <h5 class="text-right">Balance: £<% out.print(String.format("%.2f", (Float) request.getAttribute("balance"))); %></h5>    
+                    <h5 class="text-right">Balance: £<%= String.format("%.2f", (Double) request.getAttribute("balance"))%></h5>    
                 </div>
 
             </div>
@@ -39,10 +40,10 @@
                         for (Payment payment : payments) {
                     %>
                     <tr>
-                        <td><% out.print(payment.getDate().toString()); %></td>
-                        <td><% out.print(payment.getTime().toString()); %></td>
-                        <td><% out.print(payment.getTypeOfPayment()); %></td>
-                        <td>£<% out.print(String.format("%.2f", payment.getAmount())); %></td>
+                        <td><%= payment.getDate().toString()%></td>
+                        <td><%= payment.getTime().toString()%></td>
+                        <td><%= payment.getTypeOfPayment()%></td>
+                        <td>£<%= String.format("%.2f", payment.getAmount())%></td>
                     </tr>
                     <% }%>
                 </tbody>

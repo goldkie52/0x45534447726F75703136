@@ -14,9 +14,12 @@ import model.User;
 /**
  * Retrieves all payments for the currently logged in member and forwards onto view-payments.jsp.
  * @author Matthew Carpenter 14012396
+ * @author Kieran Harris 14010534
  */
 public class ViewPayments extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,19 +32,21 @@ public class ViewPayments extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        // Get connection from Servlet Context
-        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
-        // Create DAO and get all payments in system
-        PaymentDao paymentDao = new PaymentDaoImpl(connection);
         
-        User loggedInUser = null;
-        if (request.getSession().getAttribute("loggedInUser") != null) {
-            loggedInUser = ((User) request.getSession().getAttribute("loggedInUser"));
+        User loggedInUser = (User) request.getSession().getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            response.sendRedirect("/");
+            return;
         }
         
+        // Get connection from Servlet Context
+        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        
+        // Create DAO and get all payments in system
+        PaymentDao paymentDao = new PaymentDaoImpl(connection);
         Payment[] payments = paymentDao.getPaymentsForMember(loggedInUser.getId());
         
-        float balance = 0;
+        double balance = 0;
         for (Payment payment : payments) {
             balance += payment.getAmount();
         }
@@ -90,5 +95,7 @@ public class ViewPayments extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    // </editor-fold>
 
 }
