@@ -63,14 +63,8 @@ public class MakePayment extends HttpServlet {
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         PaymentDao paymentDao = new PaymentDaoImpl(connection);
         
-        // Find the next paymentId
-        Payment[] allPayment = paymentDao.getAllPayments();
-        int paymentId = 0;
-        for (Payment payment : allPayment) {
-            if (payment.getId() >= paymentId) {
-                paymentId = payment.getId() + 1;
-            }
-        }
+        // Get the next paymentId
+        int paymentId = paymentDao.getNextId();
         
         Payment payment = new Payment();
         payment.setId(paymentId);

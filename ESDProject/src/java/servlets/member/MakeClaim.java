@@ -70,14 +70,8 @@ public class MakeClaim extends HttpServlet {
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         ClaimDao claimDao = new ClaimDaoImpl(connection);
         
-        // Find the next claimId
-        Claim[] allClaim = claimDao.getAllClaims();
-        int claimId = 0;
-        for (Claim claim : allClaim) {
-            if (claim.getId() >= claimId) {
-                claimId = claim.getId() + 1;
-            }
-        }
+        // Get the next claimId
+        int claimId = claimDao.getNextId();
         
         Claim claim = new Claim();
         claim.setId(claimId);

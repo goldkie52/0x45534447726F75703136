@@ -10,7 +10,7 @@ import model.Payment;
  */
 public interface PaymentDao {
 
-// <editor-fold defaultstate="collapsed" desc="Methods">
+    // <editor-fold defaultstate="collapsed" desc="Methods">
 
     /**
      * Adds a new payment to the system.
@@ -45,6 +45,12 @@ public interface PaymentDao {
      * @return true if the update was successful, otherwise false
      */
     public boolean updatePayment(Payment payment);
+    
+    /**
+     * Gets the next open id for a payment
+     * @return the next valid id
+     */
+    int getNextId();
     
     // </editor-fold>
 

@@ -173,6 +173,36 @@ public class PaymentDaoImplTest extends BaseDbTestClass {
         Payment[] result = instance.getPaymentsForMember(memIds[0]);
         assertArrayEquals(expResult, result);
     }
+    
+    /**
+     * Test of getNextId method, of class ClaimDaoImpl, when there are existing claims.
+     */
+    @Test
+    public void testGetNextId_ExistingClaimsPresent() {
+        int[] payments = new int[]{ 1, 2, 3 };
+        String[] memIds = new String[]{"memId1", "memId2"};
+        String[] typeOfPayments = new String[]{"FEE", "FEE", "FEE"};
+        double[] amounts = new double[]{10, 10 , 10};
+        LocalDate[] dates = new LocalDate[]{LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07"), LocalDate.parse("2015-01-07")};
+        LocalTime[] times = new LocalTime[]{LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21"), LocalTime.parse("10:08:21")};
+        for (int i = 0; i < payments.length; i++) {
+            Payment payment = createPayment(payments[i], memIds[0], typeOfPayments[i], amounts[i], dates[i], times[i]);
+            addPaymentToTestDatabase(payment);
+        }
+        PaymentDaoImpl instance = new PaymentDaoImpl(connection);
+        int result = instance.getNextId();
+        assertEquals(4, result);
+    }
+    
+    /**
+     * Test of getNextId method, of class ClaimDaoImpl, when there are no existing claims.
+     */
+    @Test
+    public void testGetNextId_NoClaimsPresent() {
+        PaymentDaoImpl instance = new PaymentDaoImpl(connection);
+        int result = instance.getNextId();
+        assertEquals(0, result);
+    }
 
     // </editor-fold>
     

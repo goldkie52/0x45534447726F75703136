@@ -137,7 +137,7 @@ public class ClaimDaoImpl implements ClaimDao {
         return null;
     }
     
-        @Override
+    @Override
     public Claim[] getClaimsFromDate(LocalDate date) {
         try (PreparedStatement prepStatement = connection.prepareStatement("SELECT * FROM CLAIMS WHERE \"date\" > ?")) {
             prepStatement.setDate(1, Date.valueOf(date));
@@ -157,6 +157,18 @@ public class ClaimDaoImpl implements ClaimDao {
             Logger.getLogger(ClaimDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    @Override
+    public int getNextId() {
+        Claim[] allClaims = getAllClaims();
+        int maxId = -1;
+        for (Claim claim : allClaims) {
+            if (claim.getId() > maxId) {
+                maxId = claim.getId();
+            }
+        }
+        return maxId + 1;
     }
 
     private Claim createClaim(int id, String memId, LocalDate date, String rationale, String status, double amount) {

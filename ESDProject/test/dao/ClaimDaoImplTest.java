@@ -94,8 +94,19 @@ public class ClaimDaoImplTest  extends BaseDbTestClass {
         assertArrayEquals(expResult, result);
     }
     
-        /**
-     * Test of getAllClaimsFromDate method, of class ClaimDaoImpl, when there are claims in the database for current year.
+    /**
+     * Test of getAllClaims method, of class ClaimDaoImpl, when there are no claims in the database.
+     */
+    @Test
+    public void testGetAllClaims_NoClaims() {
+        Claim[] expResult = new Claim[0];
+        ClaimDaoImpl instance = new ClaimDaoImpl(connection);
+        Claim[] result = instance.getAllClaims();
+        assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getAllClaimsFromDate method, of class ClaimDaoImpl, when there are claims in the database.
      */
     @Test
     public void testGetAllClaimsFromDate_ClaimsPresent() {
@@ -110,19 +121,10 @@ public class ClaimDaoImplTest  extends BaseDbTestClass {
             expResult[i] = claim;
             addClaimToTestDatabase(claim);
         }
+        Claim oldClaim = createClaim(4, "id5", LocalDate.parse("2016-01-07"), "rationale5", 10.05);
+        addClaimToTestDatabase(oldClaim);
         ClaimDaoImpl instance = new ClaimDaoImpl(connection);
         Claim[] result = instance.getClaimsFromDate(LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1));
-        assertArrayEquals(expResult, result);
-    }
-    
-    /**
-     * Test of getAllClaims method, of class ClaimDaoImpl, when there are no claims in the database.
-     */
-    @Test
-    public void testGetAllClaims_NoClaims() {
-        Claim[] expResult = new Claim[0];
-        ClaimDaoImpl instance = new ClaimDaoImpl(connection);
-        Claim[] result = instance.getAllClaims();
         assertArrayEquals(expResult, result);
     }
     
@@ -172,15 +174,7 @@ public class ClaimDaoImplTest  extends BaseDbTestClass {
      */
     @Test
     public void testGetClaims_ClaimsPresent() {
-        /*String id  = "0";
-        Claim expResult = createClaim(Integer.parseInt(id), "memId", LocalDate.now(), "rationale", 10.10);
-        assertTrue(addClaimToTestDatabase(expResult));
-        ClaimDaoImpl instance = new ClaimDaoImpl(connection);
-        Claim result = instance.getClaim(id);
-        assertEquals(expResult, result);*/
-        
-        
-        int[] id= new int[] { 0,1,2,3 };
+        int[] id = new int[] { 0,1,2,3 };
         String memId = "memId";
         LocalDate[] dates = new LocalDate [] {LocalDate.now(), LocalDate.now(), LocalDate.now(), LocalDate.now()};
         String[] rationales = new String[] { "rationale1", "rationale2", "rationale3", "rationale4" };
@@ -191,7 +185,6 @@ public class ClaimDaoImplTest  extends BaseDbTestClass {
             expResult[i] = claim;
             addClaimToTestDatabase(claim);
         }
-        
         ClaimDaoImpl instance = new ClaimDaoImpl(connection);
         Claim[] result = instance.getClaims(memId);
         assertArrayEquals(expResult, result);
@@ -206,6 +199,35 @@ public class ClaimDaoImplTest  extends BaseDbTestClass {
         ClaimDaoImpl instance = new ClaimDaoImpl(connection);
         Claim[] result = instance.getClaims("memId");
         assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getNextId method, of class ClaimDaoImpl, when there are existing claims.
+     */
+    @Test
+    public void testGetNextId_ExistingClaimsPresent() {
+        int[] id = new int[] { 0,1,2,3 };
+        String memId = "memId";
+        LocalDate[] dates = new LocalDate [] {LocalDate.now(), LocalDate.now(), LocalDate.now(), LocalDate.now()};
+        String[] rationales = new String[] { "rationale1", "rationale2", "rationale3", "rationale4" };
+        double [] amount = new double [] {10.01, 10.02, 10.03, 10.04};
+        for (int i = 0; i < id.length; i++) {
+            Claim claim = createClaim(id[i], memId, dates[i], rationales[i], amount[i]);
+            addClaimToTestDatabase(claim);
+        }
+        ClaimDaoImpl instance = new ClaimDaoImpl(connection);
+        int result = instance.getNextId();
+        assertEquals(4, result);
+    }
+    
+    /**
+     * Test of getNextId method, of class ClaimDaoImpl, when there are no existing claims.
+     */
+    @Test
+    public void testGetNextId_NoClaimsPresent() {
+        ClaimDaoImpl instance = new ClaimDaoImpl(connection);
+        int result = instance.getNextId();
+        assertEquals(0, result);
     }
     
     // </editor-fold>

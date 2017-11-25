@@ -55,14 +55,8 @@ public class ChargeMembers extends HttpServlet {
         MemberDao memberDao = new MemberDaoImpl(connection);
         PaymentDao paymentDao = new PaymentDaoImpl(connection);
 
-        // Find the next paymentId
-        Payment[] allPayment = paymentDao.getAllPayments();
-        int paymentId = 0;
-        for (Payment payment : allPayment) {
-            if (payment.getId() >= paymentId) {
-                paymentId = payment.getId() + 1;
-            }
-        }
+        // Get the next paymentId
+        int paymentId = paymentDao.getNextId();
         
         // Find the next memberId
         Member[] allVerifiedMembers = memberDao.getAllVerifiedMembers(MemberStatus.APPROVED);

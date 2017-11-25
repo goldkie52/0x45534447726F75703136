@@ -139,6 +139,18 @@ public class PaymentDaoImpl implements PaymentDao {
         }
         return false;
     }
+    
+    @Override
+    public int getNextId() {
+        Payment[] allPayments = getAllPayments();
+        int maxId = -1;
+        for (Payment payment : allPayments) {
+            if (payment.getId() > maxId) {
+                maxId = payment.getId();
+            }
+        }
+        return maxId + 1;
+    }
 
     private Payment createPayment(int id, String memId, String typeOfPayment, double amount, LocalDate date, LocalTime time) {
         Payment payment = new Payment();

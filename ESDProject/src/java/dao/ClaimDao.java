@@ -54,6 +54,11 @@ public interface ClaimDao {
      */
     Claim[] getClaimsFromDate(LocalDate date);
     
+    /**
+     * Gets the next open id for a claim
+     * @return the next valid id
+     */
+    int getNextId();
     
     // </editor-fold>
     
