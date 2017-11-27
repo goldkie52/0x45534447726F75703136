@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.WebServiceRef;
+import services.ProcessMember_Service;
 
 /**
  * Processes the member from the request sent by view-members.jsp.
@@ -13,6 +15,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ProcessMember extends HttpServlet {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/ESDWebService/ProcessMember.wsdl")
+    private ProcessMember_Service service;
+
+    
+    // <editor-fold defaultstate="collapsed" desc="Variables">
+    
+    
+
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
     /**
@@ -27,18 +38,29 @@ public class ProcessMember extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProcessMember</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProcessMember at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String memberId = request.getParameter("member");
+        boolean success;
+        
+        if (request.getParameter("approve") != null) {
+            success = approve(memberId);
+        } else {
+            success = reject(memberId);
         }
+        request.getRequestDispatcher("/admin/view-members.do?success=" + success).forward(request, response);
+    }
+    
+    private boolean approve(String id) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        services.ProcessMember port = service.getProcessMemberPort();
+        return port.approvemember(id);
+    }
+
+    private boolean reject(String id) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        services.ProcessMember port = service.getProcessMemberPort();
+        return port.suspendmember(id);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -81,5 +103,7 @@ public class ProcessMember extends HttpServlet {
     }// </editor-fold>
     
     // </editor-fold>
+
+
 
 }

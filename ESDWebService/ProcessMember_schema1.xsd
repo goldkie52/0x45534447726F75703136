@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://services/" xmlns:tns="http://services/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="approve" type="tns:approve"/>
+
+  <xs:element name="approveResponse" type="tns:approveResponse"/>
+
+  <xs:element name="reject" type="tns:reject"/>
+
+  <xs:element name="rejectResponse" type="tns:rejectResponse"/>
+
+  <xs:complexType name="approve">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="approveResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="reject">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="rejectResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

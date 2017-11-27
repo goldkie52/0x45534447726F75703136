@@ -42,5 +42,21 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/services"/>
         <delete dir="${build.generated.dir}/jax-wsCache/ProcessClaim"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-ProcessClaim"/>
+    <target name="wsimport-client-ProcessMember" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/ProcessMember"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/ProcessMember" destdir="${build.generated.dir}/jax-wsCache/ProcessMember" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/ProcessMember/wsdl/localhost_8080/ESDWebService/ProcessMember.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/ESDWebService/ProcessMember?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/ProcessMember/wsdl/localhost_8080/ESDWebService/ProcessMember.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/ProcessMember"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/ProcessMember">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-ProcessMember" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/services"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/ProcessMember"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-ProcessClaim, wsimport-client-ProcessMember"/>
 </project>

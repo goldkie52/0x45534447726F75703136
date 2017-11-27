@@ -72,14 +72,15 @@
             </div>
 
             <div class="row">       
-                <h5>Annual Turnover: £<%= String.format("%.2f", (Double) request.getAttribute("totalClaimValue"))%></h5>  
+                <h5>Annual Turnover: £<%= String.format("%.2f", (Double) request.getAttribute("totalClaimValue"))%></h5>
+                <h5 class="ml-auto">Annual Member Charges: £<%= String.format("%.2f", (Double) request.getAttribute("memberAmount"))%></h5>
             </div>
             <div class="row">
-                <form  class="form-horizontal mx-auto xyz-form-width" role="form" method="POST" action="/admin/charge-members.do">
+                <form  class="form-horizontal ml-auto" role="form" method="POST" action="/admin/charge-members.do">
                     <input type="hidden" name="memberAmount" class="form-control" id="memberAmount" value="<%= (Double) request.getAttribute("memberAmount")%>"> 
-                    <button type="submit" class="btn btn-success form-check"> Charge Members</button>
+                    <button type="submit" class="btn btn-success form-check">Charge Members</button>
                 </form>
-                <h5 class="xyz-line-height-40 ml-1">Annual Member Charges: £<%= String.format("%.2f", (Double) request.getAttribute("memberAmount"))%></h5>
+                
             </div>
 
         </div>       
