@@ -2,4 +2,6 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://localhost:8080/ESDWebService/ProcessClaim?wsdl" uri="wsdl/localhost_8080/ESDWebService/ProcessClaim.wsdl"/>
     <system systemId="http://localhost:8080/ESDWebService/ProcessClaim?xsd=1" uri="wsdl/localhost_8080/ESDWebService/ProcessClaim.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/ESDWebService/ProcessMember?wsdl" uri="wsdl/localhost_8080/ESDWebService/ProcessMember.wsdl"/>
+    <system systemId="http://localhost:8080/ESDWebService/ProcessMember?xsd=1" uri="wsdl/localhost_8080/ESDWebService/ProcessMember.xsd_1.xsd"/>
 </catalog>

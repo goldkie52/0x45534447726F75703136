@@ -144,6 +144,10 @@
         <servlet-name>ProcessClaim</servlet-name>
         <url-pattern>/admin/process-claim.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessMember</servlet-name>
+        <url-pattern>/admin/process-member.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
