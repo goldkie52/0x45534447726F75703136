@@ -33,26 +33,29 @@ public class ViewClaims extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        // Retrieve logged in user from session
         User loggedInUser = (User) request.getSession().getAttribute("loggedInUser");
+        // If not set, redirect to home page
         if (loggedInUser == null) {
             response.sendRedirect("/");
             return;
         }
         
-        // Get connection from Servlet Context
+        // Get connection from servlet context
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
-        // Create DAO and get all payments in system
+        // Create Claim data access object
         ClaimDao claimDao = new ClaimDaoImpl(connection);
         
-        //DOUBLE CHECK CALL IS CORRECT!
+        // Get all claims in system for current user
         Claim[] claims = claimDao.getClaims(loggedInUser.getId());
         
-        // Set payments into attribute and forward onto view
+        // Set claims into attribute and forward to view-claims page
         request.setAttribute("claims", claims);
         request.getRequestDispatcher("/member/claims/view-claims.jsp").forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet Methods">
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *

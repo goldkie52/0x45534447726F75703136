@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 
 /**
  * Calculates and processes the charges for the annual turnover.
@@ -40,7 +41,14 @@ public class TurnoverCalculator {
      */
     public Claim[] getRelevantClaims() {
         ClaimDao claimDao = new ClaimDaoImpl(connection);
-        return claimDao.getClaimsFromDate(LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1));
+        Claim[] yearlyClaims = claimDao.getClaimsFromDate(LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1));
+        ArrayList<Claim> approvedClaims = new ArrayList();
+        for (Claim claim : yearlyClaims) {
+            if (claim.getStatus() == ClaimStatus.APPROVED) {
+                approvedClaims.add(claim);
+            }
+        }
+        return approvedClaims.toArray(new Claim[0]);
     }
     
     /**

@@ -29,7 +29,7 @@ public interface ClaimDao {
     
     /**
      * Gets all the claims in the system.
-     * @return all claims in the system if the operation was a success; otherwise null
+     * @return an array of the claims in the system if successful; otherwise null
      */
     Claim[] getAllClaims();
     
@@ -43,14 +43,14 @@ public interface ClaimDao {
     /**
      * Gets all the claims with the specified memId
      * @param memId the id of the member to get the claims for
-     * @return all claims in the system from specified member if the operation was a success; otherwise null
+     * @return an array of the claims in the system for the specified member id if successful; otherwise null
      */
     Claim[] getClaims(String memId);
     
     /**
-     * Gets all the claims with the specified date
-     * @param date the date of the claim to get the claims for
-     * @return all claims in the system from specified member if the operation was a success; otherwise null
+     * Gets all the claims that were added after the specified date
+     * @param date the date to retrieve claims after
+     * @return an array of the claims in the system after the date if successful; otherwise null
      */
     Claim[] getClaimsFromDate(LocalDate date);
     

@@ -22,20 +22,20 @@ public interface PaymentDao {
     /**
      * Gets the payment with the specified id.
      * @param id the id of the payment to get
-     * @return the member with the specified id if the operation was a success; otherwise null
+     * @return the payment with the specified id if the operation was a success; otherwise null
      */
     public Payment getPayment(int id);
     
     /**
      * Gets all the payments in the system.
-     * @return all payments in the system if the operation was a success; otherwise null
+     * @return an array of all payments in the system if successful; otherwise null
      */
     public Payment[] getAllPayments();
     
     /**
      * Gets all the Payments for a specified memId
      * @param memId the member id to get payments for
-     * @return all payments  for a specified memId if the operation was a success; otherwise null
+     * @return an array of all payments in the system for a specified member id if successful; otherwise null
      */
     public Payment[] getPaymentsForMember(String memId);
     

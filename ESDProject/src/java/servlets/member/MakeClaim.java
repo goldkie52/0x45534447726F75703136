@@ -35,45 +35,57 @@ public class MakeClaim extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        // Retrieve logged in user from session
         User loggedInUser = (User)request.getSession().getAttribute("loggedInUser");
+        // If not set, redirect to home page
         if (loggedInUser == null) {
             response.sendRedirect("/");
             return;
         }
         
+        // Retrieve claim amount value from request
         String stringAmount = request.getParameter("amount");
+        // If not set, forward to make-claim page
         if (stringAmount == null) {
             request.getRequestDispatcher("/member/claims/make-claim.jsp").forward(request, response);
             return;
         }
         
+        // Parse double value from amount parameter
         double amount;
         try {
             amount = Double.parseDouble(stringAmount);
         } catch (NumberFormatException e) {
+            // If not a valid double, forward to make-claim page with amount parameter set to invalid
             request.getRequestDispatcher("/member/claims/make-claim.jsp?amount=invalid").forward(request, response);
             return;
         }
         
+        // If amount value is 0, forward to make-claim page with amount parameter set to invalid
         if (amount == 0) {
             request.getRequestDispatcher("/member/claims/make-claim.jsp?amount=invalid").forward(request, response);
             return;
         }
         
+        // Retrieve claim rationale value from request
         String stringRationale = request.getParameter("rationale");
+        // If not set, forward to make-claim page with rationale parameter set to invalid
         if (stringRationale == null) {
             request.getRequestDispatcher("/member/claims/make-claim.jsp?rationale=invalid").forward(request, response);
             return;
         }
         
-        // Get connection from Servlet Context
+        // Get connection from servlet context
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        // Create Claim data access object
         ClaimDao claimDao = new ClaimDaoImpl(connection);
         
-        // Get the next claimId
+        // Get the next valid id for a claim
         int claimId = claimDao.getNextId();
         
+        // Create new Claim object
         Claim claim = new Claim();
+        // Set values on object
         claim.setId(claimId);
         claim.setMemId(loggedInUser.getId());
         LocalDateTime dateTime = LocalDateTime.now();
@@ -82,17 +94,15 @@ public class MakeClaim extends HttpServlet {
         claim.setStatus(ClaimStatus.PENDING);
         claim.setAmount(amount);
         
-        if (!claimDao.addClaim(claim)) {
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?success=false").forward(request, response);
-        } else {
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?success=true").forward(request, response);
-        }
+        // Add Claim to system and forward to make-claim page with success parameter set accordingly
+        boolean success = claimDao.addClaim(claim);
+        request.getRequestDispatcher("/member/claims/make-claim.jsp?success=" + success).forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet Methods">
+    
     /**
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -106,7 +116,6 @@ public class MakeClaim extends HttpServlet {
 
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -120,7 +129,6 @@ public class MakeClaim extends HttpServlet {
 
     /**
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

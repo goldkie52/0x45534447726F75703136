@@ -33,31 +33,37 @@ public class ViewPayments extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        // Retrieve logged in user from session
         User loggedInUser = (User) request.getSession().getAttribute("loggedInUser");
+        // If not set, redirect to home page
         if (loggedInUser == null) {
             response.sendRedirect("/");
             return;
         }
         
-        // Get connection from Servlet Context
+        // Get connection from servlet context
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         
-        // Create DAO and get all payments in system
+        // Create Payment data access object
         PaymentDao paymentDao = new PaymentDaoImpl(connection);
+        
+        // Get all payments in system for current user
         Payment[] payments = paymentDao.getPaymentsForMember(loggedInUser.getId());
         
+        // Calculate member's balance from payments
         double balance = 0;
         for (Payment payment : payments) {
             balance += payment.getAmount();
         }
         
-        // Set payments into attribute and forward onto view
+        // Set payments and balance into attributes and forward onto view-payments page
         request.setAttribute("payments", payments);
         request.setAttribute("balance", balance);
         request.getRequestDispatcher("/member/payments/view-payments.jsp").forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet Methods">
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
