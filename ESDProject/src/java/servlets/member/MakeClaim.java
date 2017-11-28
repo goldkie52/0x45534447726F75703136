@@ -45,9 +45,9 @@ public class MakeClaim extends HttpServlet {
         
         // Retrieve claim amount value from request
         String stringAmount = request.getParameter("amount");
-        // If not set, forward to make-claim page with amount parameter set to invalid
+        // If not set, forward to make-claim page
         if (stringAmount == null) {
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?amount=invalid").forward(request, response);
+            request.getRequestDispatcher("/member/claims/make-claim.jsp").forward(request, response);
             return;
         }
         

@@ -44,9 +44,9 @@ public class MakePayment extends HttpServlet {
         
         // Retrieve payment amount value from request
         String stringAmount = request.getParameter("amount");
-        // If not set, forward to make-payment page with amount parameter set to invalid
+        // If not set, forward to make-payment page
         if (stringAmount == null) {
-            request.getRequestDispatcher("/member/payments/make-payment.jsp?amount=invalid").forward(request, response);
+            request.getRequestDispatcher("/member/payments/make-payment.jsp").forward(request, response);
             return;
         }
         
