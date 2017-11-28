@@ -34,16 +34,28 @@ public class TurnoverCalculator {
     
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
+    /**
+     * Gets the relevant claims from January 1st of the current year.
+     * @return the claims from current year.
+     */
     public Claim[] getRelevantClaims() {
         ClaimDao claimDao = new ClaimDaoImpl(connection);
         return claimDao.getClaimsFromDate(LocalDate.of(LocalDate.now().getYear(), Month.JANUARY, 1));
     }
     
+    /**
+     * Gets the relevant approved members.
+     * @return the approved members.
+     */
     public Member[] getRelevantMembers() {
         MemberDao memberDao = new MemberDaoImpl(connection);
         return memberDao.getMembers(MemberStatus.APPROVED);
     }
-    
+     
+    /**
+     * Gets the total turnover of the claims.
+     * @return the total turnover of all relevant claims.
+     */
     public double getTotalTurnover() {
         Claim[] claims = getRelevantClaims();
         double total = 0;
@@ -53,13 +65,17 @@ public class TurnoverCalculator {
         return total;
     }
     
+    /**
+     * Charges members their segment of total turnover.
+     * @return the member charge from all relevant claims.
+     */
     public boolean chargeMembers() {
         // Get information
         double totalTurnover = getTotalTurnover();
         Member[] members = getRelevantMembers();
         double memberCharge = totalTurnover / members.length;
         
-        // Setup data access object
+        // Creates data access object
         PaymentDao paymentDao = new PaymentDaoImpl(connection);
         
         // Get the next paymentId
@@ -71,7 +87,7 @@ public class TurnoverCalculator {
             payment.setId(paymentId);
             payment.setMemId(member.getId());
             payment.setTypeOfPayment("CHARGE");
-            payment.setAmount(memberCharge);
+            payment.setAmount(-memberCharge);
             LocalDateTime dateTime = LocalDateTime.now();
             payment.setDate(dateTime.toLocalDate());
             payment.setTime(dateTime.toLocalTime());

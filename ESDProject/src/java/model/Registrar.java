@@ -15,6 +15,7 @@ import java.util.Date;
  * Registers a new user to the system.
  * @author Matthew Carpenter 14012396
  * @author James Broadberry 14007903
+ * @author Rachel Bailey 13006455
  */
 public class Registrar {
     
@@ -49,12 +50,15 @@ public class Registrar {
     public SignupResult register(String firstName, String lastName, String dob, String address) {
         SignupResult result = new SignupResult();
         String fullname = firstName + " " + lastName;
+        //generates username using input parameters
         String username = generateUsernameFromFirstAndLast(firstName, lastName);
+        //sets registration date to the current date
         String registedDate = getCurrentDate();
-        
+        //checks the date of birth is in correct format
         Date dobDate = validateDate(dob, "dd-MM-yyyy");
         result.setDobValid(dobDate != null);
         
+        //Creates user DAO and retrieves user by username into system
         UserDao userDao = new UserDaoImpl(this.connection);
         User existingUser = userDao.getUser(username);
         result.setUserValid(existingUser == null);
@@ -62,18 +66,21 @@ public class Registrar {
             return result;
         }
         
+        //generates password using the users date of birth
         String generatedPassword = generatePasswordFromDate(dobDate);
-        
+        //adds user to database
         User userToAdd = new User();
         userToAdd.setId(username);
         userToAdd.setPassword(generatedPassword);
         userToAdd.setStatus(UserStatus.APPLIED);
+        //sets true if user information added successfully
         boolean addedUser = userDao.addUser(userToAdd);
 
         if (addedUser) {
             result.setNewUser(userToAdd);
         }
         
+        //Creates member DAO and retrieves all members into system
         MemberDao memberDao = new MemberDaoImpl(this.connection);
         Member memberToAdd = new Member();
         memberToAdd.setId(username);
@@ -83,8 +90,10 @@ public class Registrar {
         memberToAdd.setStatus(MemberStatus.APPLIED);
         memberToAdd.setDob(parseLocalDate(dob, "dd-MM-yyyy"));
         memberToAdd.setDor(parseLocalDate(registedDate, "dd-MM-yyyy"));
+        //sets true if member information added successfully
         boolean addedMember = memberDao.addMember(memberToAdd);
         
+        //sets connection error if either added user or member are false
         result.setConnectionError(!addedUser || !addedMember);
         
         return result;

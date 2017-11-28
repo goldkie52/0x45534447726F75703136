@@ -8,6 +8,7 @@ import java.sql.Connection;
  * Authenticates a login request.
  * @author Matthew Carpenter 14012396
  * @author James Broadberry 14007903
+ * @author Rachel Bailey 13006455
  */
 public class Authenticator {
     
@@ -42,9 +43,11 @@ public class Authenticator {
         result.setValid(false);
         result.setUser(null);
         
+        //Creates user DAO and retrieves user by username into system
         UserDao userDao = new UserDaoImpl(connection);
         User user = userDao.getUser(username);
         
+        //if the user exists, check the password against database and return true if correct.
         if (user != null) {
             if (password.equals(user.getPassword())) {
                 result.setValid(true);

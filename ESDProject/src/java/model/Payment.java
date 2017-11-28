@@ -107,7 +107,7 @@ public class Payment implements Serializable {
     }
 
      /**
-     * Gets the value of the time property.
+     * Gets the value of the time of payment property.
      * @return the time property
      */ 
     public LocalTime getTime() {

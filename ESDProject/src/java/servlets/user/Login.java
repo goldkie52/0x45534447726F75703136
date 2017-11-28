@@ -32,13 +32,15 @@ public class Login extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
+        //If no inputs for either username or password, return to login page
         if (username == null || password == null) {
             request.getRequestDispatcher("/user/login.jsp").forward(request, response);
             return;
         }
         
+        //Get connection
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
-        
+        //Creates authenticator and authenticates login username and password
         Authenticator authenticator = new Authenticator(connection);
         LoginResult result = authenticator.authenticate(username, password);
             

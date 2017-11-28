@@ -7,6 +7,7 @@ import java.util.Objects;
  * The Claim class is the value object that represents a claim in the database.
  * @author Matthew Carpenter 14012396
  * @author Charlotte Harris 14008503
+ * @author Rachel Bailey 13006455
  */
 public class Claim {
     
@@ -40,7 +41,7 @@ public class Claim {
     }
     
     /**
-     * Gets the value of the memId property.
+     * Gets the value of the memId (member ID) property.
      * @return the memId property
      */
     public String getMemId() {
@@ -56,7 +57,7 @@ public class Claim {
     }
     
     /**
-     * Gets the value of the date property.
+     * Gets the value of the date of claim property.
      * @return the date property
      */
     public LocalDate getDate(){
@@ -72,7 +73,7 @@ public class Claim {
     }
     
     /**
-     * Gets the value of the rationale property.
+     * Gets the value of the rationale of the claim property.
      * @return the rationale property
      */
     public String getRationale() {
@@ -88,7 +89,7 @@ public class Claim {
     }
     
     /**
-     * Gets the value of the status property.
+     * Gets the value of the status of the claim property.
      * @return the status property
      */
     public ClaimStatus getStatus() {
@@ -104,7 +105,7 @@ public class Claim {
     }
     
     /**
-     * Gets the value of the amount property.
+     * Gets the value of the amount the claim is asking for property.
      * @return the amount property
      */
     public double getAmount() {

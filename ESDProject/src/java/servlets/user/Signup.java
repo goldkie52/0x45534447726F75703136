@@ -36,24 +36,31 @@ public class Signup extends HttpServlet {
         String dob = request.getParameter("dob");
         String address = request.getParameter("address");
         
+        //If no inputs for any of the fields, return to signup page
         if (firstName == null || lastName == null || dob == null || address == null) {
             request.getRequestDispatcher("/user/signup.jsp").forward(request, response);
             return;
         }
         
+        //Get connection
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
         
+        //Creates registrar and registers the sign up details
         Registrar registrar = new Registrar(connection);
         SignupResult result = registrar.register(firstName.trim(), lastName.trim(), dob, address);
+        //If request is invalid, redirect to signup page
         if (!result.isRequestValid()) {
             String redirectString = "/user/signup.jsp?";
             List<String> arguments = new ArrayList<>();
+            //if user issue, add argument of User invalid
             if (!result.isUserValid()) {
                 arguments.add("user=invalid");
             }
+            //if date of birth issue, add argument of DoB invalid
             if (!result.isDobValid()) {
                 arguments.add("dob=invalid");
             }
+            //for multiple errors, return error with commas
             for (int i = 0; i < arguments.size(); i++) {
                 redirectString += arguments.get(i);
                 if (i != arguments.size() - 1) {
@@ -64,6 +71,7 @@ public class Signup extends HttpServlet {
         } else if (result.isConnectionError()) {
             
         } else {
+            //set as logged in user
             User user = result.getNewUser();
             request.getSession().setAttribute("loggedInUser", user);
             response.sendRedirect("/?signedUp=true");
