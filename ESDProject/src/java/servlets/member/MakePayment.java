@@ -34,39 +34,49 @@ public class MakePayment extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        // Retrieve logged in user from session
         User loggedInUser = (User)request.getSession().getAttribute("loggedInUser");
+        // If not set, redirect to home page
         if (loggedInUser == null) {
             response.sendRedirect("/");
             return;
         }
         
+        // Retrieve payment amount value from request
         String stringAmount = request.getParameter("amount");
+        // If not set, forward to make-payment page with amount parameter set to invalid
         if (stringAmount == null) {
-            request.getRequestDispatcher("/member/payments/make-payment.jsp").forward(request, response);
-            return;
-        }
-        
-        double amount;
-        try {
-            amount = Double.parseDouble(stringAmount);
-        } catch (NumberFormatException e) {
             request.getRequestDispatcher("/member/payments/make-payment.jsp?amount=invalid").forward(request, response);
             return;
         }
         
+        // Parse double value from amount parameter
+        double amount;
+        try {
+            amount = Double.parseDouble(stringAmount);
+        } catch (NumberFormatException e) {
+            // If not a valid double, forward to make-payment page with amount parameter set to invalid
+            request.getRequestDispatcher("/member/payments/make-payment.jsp?amount=invalid").forward(request, response);
+            return;
+        }
+        
+        // If amount value is 0, forward to make-payment page with amount parameter set to invalid
         if (amount == 0) {
             request.getRequestDispatcher("/member/payments/make-payment.jsp?amount=invalid").forward(request, response);
             return;
         }
         
-        // Get connection from Servlet Context
+        // Get connection from servlet context
         Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
+        // Create Payment data access object
         PaymentDao paymentDao = new PaymentDaoImpl(connection);
         
-        // Get the next paymentId
+        // Get the next valid id for a payment
         int paymentId = paymentDao.getNextId();
         
+        // Create new Payment object
         Payment payment = new Payment();
+        // Set values on object
         payment.setId(paymentId);
         payment.setMemId(loggedInUser.getId());
         payment.setTypeOfPayment("FEE");
@@ -75,14 +85,13 @@ public class MakePayment extends HttpServlet {
         payment.setDate(dateTime.toLocalDate());
         payment.setTime(dateTime.toLocalTime());
         
-        if (!paymentDao.addPayment(payment)) {
-            request.getRequestDispatcher("/member/payments/make-payment.jsp?success=false").forward(request, response);
-        } else {
-            request.getRequestDispatcher("/member/payments/make-payment.jsp?success=true").forward(request, response);
-        }
+        // Add Payment to system and forward to make-payment page with success parameter set accordingly
+        boolean success = paymentDao.addPayment(payment);
+        request.getRequestDispatcher("/member/payments/make-payment.jsp?success=" + success).forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet Methods">
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *

@@ -28,14 +28,14 @@ public interface MemberDao {
     
     /**
      * Gets all the members in the system.
-     * @return all members in the system if the operation was a success; otherwise null
+     * @return an array of all members in the system if successful; otherwise null
      */
     Member[] getAllMembers();
     
-        /**
+    /**
      * Gets all the verified members in the system.
      * @param status the status of the member
-     * @return all verified members in the system if the operation was a success; otherwise null
+     * @return an array of the members in the system with the specified status if successful; otherwise null
      */
     Member[] getMembers(MemberStatus status);
     
