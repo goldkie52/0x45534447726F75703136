@@ -4,31 +4,31 @@
 <xsd:import namespace="http://services/" schemaLocation="http://localhost:8080/ESDWebService/ProcessMember?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="approvemember">
-<part name="parameters" element="tns:approvemember"/>
+<message name="approveMember">
+<part name="parameters" element="tns:approveMember"/>
 </message>
-<message name="approvememberResponse">
-<part name="parameters" element="tns:approvememberResponse"/>
+<message name="approveMemberResponse">
+<part name="parameters" element="tns:approveMemberResponse"/>
 </message>
-<message name="suspendmember">
-<part name="parameters" element="tns:suspendmember"/>
+<message name="suspendMember">
+<part name="parameters" element="tns:suspendMember"/>
 </message>
-<message name="suspendmemberResponse">
-<part name="parameters" element="tns:suspendmemberResponse"/>
+<message name="suspendMemberResponse">
+<part name="parameters" element="tns:suspendMemberResponse"/>
 </message>
 <portType name="ProcessMember">
-<operation name="approvemember">
-<input wsam:Action="http://services/ProcessMember/approvememberRequest" message="tns:approvemember"/>
-<output wsam:Action="http://services/ProcessMember/approvememberResponse" message="tns:approvememberResponse"/>
+<operation name="approveMember">
+<input wsam:Action="http://services/ProcessMember/approveMemberRequest" message="tns:approveMember"/>
+<output wsam:Action="http://services/ProcessMember/approveMemberResponse" message="tns:approveMemberResponse"/>
 </operation>
-<operation name="suspendmember">
-<input wsam:Action="http://services/ProcessMember/suspendmemberRequest" message="tns:suspendmember"/>
-<output wsam:Action="http://services/ProcessMember/suspendmemberResponse" message="tns:suspendmemberResponse"/>
+<operation name="suspendMember">
+<input wsam:Action="http://services/ProcessMember/suspendMemberRequest" message="tns:suspendMember"/>
+<output wsam:Action="http://services/ProcessMember/suspendMemberResponse" message="tns:suspendMemberResponse"/>
 </operation>
 </portType>
 <binding name="ProcessMemberPortBinding" type="tns:ProcessMember">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="approvemember">
+<operation name="approveMember">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -37,7 +37,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="suspendmember">
+<operation name="suspendMember">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

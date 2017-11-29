@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                            <input type="text" name="dob" class="form-control" id="dob" placeholder="D.O.B. (dd-mm-yyyy)" required="" autocomplete="off" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" title="DD-MM-YYY">
+                            <input type="text" name="dob" class="form-control" id="dob" placeholder="D.O.B. (dd-mm-yyyy)" required="" autocomplete="off" pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}" title="DD-MM-YYYY">
                         </div>
                     </div>
                 </div>
