@@ -62,7 +62,7 @@ public class FullMemberFilter implements Filter {
         // Get the logged in user
         User loggedInUser = (model.User) ((HttpServletRequest)request).getSession().getAttribute("loggedInUser");
         
-        // If user is not logged in or not a member, redirect to homepage
+        // If user is not logged in or not an approved member, redirect to homepage
         if (loggedInUser == null || loggedInUser.getStatus() != UserStatus.APPROVED) {
             ((HttpServletResponse)response).sendRedirect("/");
             return;

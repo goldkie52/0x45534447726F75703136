@@ -73,12 +73,14 @@ public class SessionFilter implements Filter {
             UserDao userDao = new UserDaoImpl(connection);
             User userInDatabase = userDao.getUser(loggedInUser.getId());
             
+            // If the user is no longer in the DB, invalidate their session and redirect to homepage
             if (userInDatabase == null) {
                 ((HttpServletRequest)request).getSession().invalidate();
                 ((HttpServletResponse)response).sendRedirect("/");
                 return;
             }
             
+            // If the user has been updated in the DB, update their session to reflect changes
             if (!loggedInUser.equals(userInDatabase)) {
                 ((HttpServletRequest)request).getSession().setAttribute("loggedInUser", userInDatabase);
                 return;
