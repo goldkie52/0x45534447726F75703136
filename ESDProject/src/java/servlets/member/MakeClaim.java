@@ -6,10 +6,8 @@ import dao.MemberDao;
 import dao.MemberDaoImpl;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.Period;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +26,7 @@ import model.User;
 public class MakeClaim extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="Methods">
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -91,32 +90,30 @@ public class MakeClaim extends HttpServlet {
 
         // Get access for currrent logged in member
         Member member = memberDao.getMember(loggedInUser.getId());
-
-        Calendar nowCalendar = new GregorianCalendar();
-        LocalDateTime nowTime = LocalDateTime.now();
-        Date nowDate = Date.valueOf(nowTime.toLocalDate());
-        nowCalendar.setTime(nowDate);
-        
-        Calendar regCalendar = new GregorianCalendar();
-        Date regDate = Date.valueOf(member.getDor());
-        regCalendar.setTime(regDate);
         
         // Calculate how long member has been registered for
-        int diffYear = nowCalendar.get(Calendar.YEAR) - regCalendar.get(Calendar.YEAR);
-        int diffMonth = diffYear * 12 + nowCalendar.get(Calendar.MONTH);
+        Period difference = Period.between(member.getDor(), LocalDate.now());
         
         // If member has been registered for less than 6 months, reject claim
-        if (diffMonth <= 6) {
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?claim=invalid").forward(request, response);
+        if (difference.toTotalMonths() <= 6) {
+            request.getRequestDispatcher("/member/claims/make-claim.jsp?registrationPeriod=invalid").forward(request, response);
             return;
         }
         
         // Get all claims for logged in user
         Claim[] userClaims = claimDao.getClaims(loggedInUser.getId());
+        int totalYearlyClaims = 0;
+        
+        // Total the number of approved claims for the user this year
+        for (Claim claim : userClaims) {
+            if (claim.getStatus() == ClaimStatus.APPROVED && claim.getDate().getYear() == LocalDate.now().getYear()) {
+                totalYearlyClaims++;
+            }
+        }
         
         // If member has made 2 or more claims that year
-        if (userClaims.length >= 2) {
-            request.getRequestDispatcher("/member/claims/make-claim.jsp?claim=invalid").forward(request, response);
+        if (totalYearlyClaims >= 2) {
+            request.getRequestDispatcher("/member/claims/make-claim.jsp?yearlyClaimLimit=invalid").forward(request, response);
             return;
         }
 
@@ -128,8 +125,7 @@ public class MakeClaim extends HttpServlet {
         // Set values on object
         claim.setId(claimId);
         claim.setMemId(loggedInUser.getId());
-        LocalDateTime dateTime = LocalDateTime.now();
-        claim.setDate(dateTime.toLocalDate());
+        claim.setDate(LocalDate.now());
         claim.setRationale(stringRationale);
         claim.setStatus(ClaimStatus.PENDING);
         claim.setAmount(amount);
@@ -179,4 +175,5 @@ public class MakeClaim extends HttpServlet {
     }// </editor-fold>
 
     // </editor-fold>
+    
 }
