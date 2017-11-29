@@ -40,6 +40,13 @@
                     </div>
                     <%
                         }
+                        if (request.getParameter("claim") != null && request.getParameter("claim").equals("invalid")) {
+                    %>
+                    <div class="alert alert-danger" role="alert">
+                        Claim Invalid (too many claims made or haven't been member for 6 months)
+                    </div>
+                    <%
+                        }
                         String success = request.getParameter("success");
                         if (success != null) {
                             if (success.equals("false")) {

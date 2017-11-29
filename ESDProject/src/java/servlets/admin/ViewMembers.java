@@ -2,6 +2,8 @@ package servlets.admin;
 
 import dao.MemberDao;
 import dao.MemberDaoImpl;
+import dao.PaymentDao;
+import dao.PaymentDaoImpl;
 import java.io.IOException;
 import java.sql.Connection;
 import javax.servlet.ServletException;
@@ -9,16 +11,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Member;
+import model.Payment;
 
 /**
  * Retrieves all the members in the system and forwards onto view-members.jsp.
+ *
  * @author Matthew Carpenter 14012396
  * @author Rachel Bailey 13006455
+ * @author Charlotte Harris 14008503
  */
 public class ViewMembers extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="Methods">
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,14 +35,30 @@ public class ViewMembers extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         //Get connection
-        Connection connection = (Connection)request.getServletContext().getAttribute("databaseConnection");
-        
+        Connection connection = (Connection) request.getServletContext().getAttribute("databaseConnection");
+
         //Creates Member DAO and retrieves all members into system
         MemberDao memberDao = new MemberDaoImpl(connection);
         Member[] members = memberDao.getAllMembers();
-        
+
+        // Create Payment data access object
+        PaymentDao paymentDao = new PaymentDaoImpl(connection);
+
+        for (Member member : members) {
+            // Get all payments in system for member
+            Payment[] payments = paymentDao.getPaymentsForMember(member.getId());
+
+            // Calculate member's balance from payments
+            double balance = 0;
+            for (Payment payment : payments) {
+                balance += payment.getAmount();
+            }
+            // Set member's balance
+            member.setBalance(balance);
+        }
+
         //Sets members into attribute
         request.setAttribute("members", members);
         request.getRequestDispatcher("/admin/view-members.jsp").forward(request, response);
@@ -82,7 +102,6 @@ public class ViewMembers extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    // </editor-fold>
 
+    // </editor-fold>
 }
