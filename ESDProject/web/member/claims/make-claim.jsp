@@ -40,10 +40,17 @@
                     </div>
                     <%
                         }
-                        if (request.getParameter("claim") != null && request.getParameter("claim").equals("invalid")) {
+                        if (request.getParameter("registrationPeriod") != null && request.getParameter("registrationPeriod").equals("invalid")) {
                     %>
                     <div class="alert alert-danger" role="alert">
-                        Claim Invalid (too many claims made or haven't been member for 6 months)
+                        You have not been a member for more than 6 months.
+                    </div>
+                    <%
+                        }
+                        if (request.getParameter("yearlyClaimLimit") != null && request.getParameter("yearlyClaimLimit").equals("invalid")) {
+                    %>
+                    <div class="alert alert-danger" role="alert">
+                        You have already had two claims approved this year.
                     </div>
                     <%
                         }
