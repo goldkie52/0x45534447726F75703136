@@ -37,6 +37,12 @@ public class ProcessClaim {
         return update(id, "REJECTED");
     }
     
+    /**
+     * Updates the claim with the specified id to the specified status
+     * @param id the id of the claim to update
+     * @param status the status the claim will change to
+     * @return 
+     */
     private boolean update(int id, String status) {
         Connection connection;
         try {

@@ -42,6 +42,12 @@ public class ProcessMember {
         return update(id, "SUSPENDED");
     }
     
+    /**
+     * Updates the member with the specified id to the specified status
+     * @param id the id of the member to update
+     * @param status the status the member will change to
+     * @return 
+     */
     private boolean update(String id, String status) {
         Connection connection;
         try {
