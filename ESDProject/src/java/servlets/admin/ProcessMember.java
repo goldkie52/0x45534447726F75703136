@@ -15,15 +15,13 @@ import services.ProcessMember_Service;
  */
 public class ProcessMember extends HttpServlet {
 
+    // <editor-fold defaultstate="collapsed" desc="Variables">
+    
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/ESDWebService/ProcessMember.wsdl")
     private ProcessMember_Service service;
 
-    
-    // <editor-fold defaultstate="collapsed" desc="Variables">
-    
-    
-
     // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Methods">
     
     /**
@@ -44,7 +42,7 @@ public class ProcessMember extends HttpServlet {
         if (request.getParameter("approve") != null) {
             success = approve(memberId);
         } else {
-            success = reject(memberId);
+            success = suspend(memberId);
         }
         request.getRequestDispatcher("/admin/view-members.do?success=" + success).forward(request, response);
     }
@@ -53,14 +51,14 @@ public class ProcessMember extends HttpServlet {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         services.ProcessMember port = service.getProcessMemberPort();
-        return port.approvemember(id);
+        return port.approveMember(id);
     }
 
-    private boolean reject(String id) {
+    private boolean suspend(String id) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         services.ProcessMember port = service.getProcessMemberPort();
-        return port.suspendmember(id);
+        return port.suspendMember(id);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -103,7 +101,5 @@ public class ProcessMember extends HttpServlet {
     }// </editor-fold>
     
     // </editor-fold>
-
-
 
 }

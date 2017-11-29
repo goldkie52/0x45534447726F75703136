@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.2-b608 (trunk-7979; 2015-01-21T12:50:19+0000) JAXWS-RI/2.2.11-b150120.1832 JAXWS-API/2.2.12 JAXB-RI/2.2.12-b141219.1637 JAXB-API/2.2.13-b141020.1521 svn-revision#unknown. --><xs:schema xmlns:tns="http://services/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://services/">
 
-<xs:element name="approvemember" type="tns:approvemember"/>
+<xs:element name="approveMember" type="tns:approveMember"/>
 
-<xs:element name="approvememberResponse" type="tns:approvememberResponse"/>
+<xs:element name="approveMemberResponse" type="tns:approveMemberResponse"/>
 
-<xs:element name="suspendmember" type="tns:suspendmember"/>
+<xs:element name="suspendMember" type="tns:suspendMember"/>
 
-<xs:element name="suspendmemberResponse" type="tns:suspendmemberResponse"/>
+<xs:element name="suspendMemberResponse" type="tns:suspendMemberResponse"/>
 
-<xs:complexType name="approvemember">
+<xs:complexType name="suspendMember">
 <xs:sequence>
 <xs:element name="id" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="approvememberResponse">
+<xs:complexType name="suspendMemberResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="suspendmember">
+<xs:complexType name="approveMember">
 <xs:sequence>
 <xs:element name="id" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="suspendmemberResponse">
+<xs:complexType name="approveMemberResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
 </xs:sequence>

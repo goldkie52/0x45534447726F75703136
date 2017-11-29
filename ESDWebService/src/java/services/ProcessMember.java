@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package services;
 
 import java.sql.Connection;
@@ -16,6 +11,7 @@ import javax.jws.WebParam;
 /**
  * Web service for processing and updating members.
  * @author James Broadberry 14007903
+ * @author Matthew Carpenter 14012396
  */
 @WebService(serviceName = "ProcessMember")
 public class ProcessMember {
@@ -27,8 +23,8 @@ public class ProcessMember {
      * @param id the id of the member to approve
      * @return true if the member was updated successfully; otherwise false
      */
-    @WebMethod(operationName = "approvemember")
-    public boolean approvemember(@WebParam(name = "id") String id) {
+    @WebMethod(operationName = "approveMember")
+    public boolean approveMember(@WebParam(name = "id") String id) {
         return update(id, "APPROVED");
     }
     
@@ -37,8 +33,8 @@ public class ProcessMember {
      * @param id the id of the member to reject
      * @return true if the member was updated successfully; otherwise false
      */
-    @WebMethod(operationName = "suspendmember")
-    public boolean suspendmember(@WebParam(name = "id") String id) {
+    @WebMethod(operationName = "suspendMember")
+    public boolean suspendMember(@WebParam(name = "id") String id) {
         return update(id, "SUSPENDED");
     }
     
@@ -53,11 +49,18 @@ public class ProcessMember {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             connection = DriverManager.getConnection("jdbc:derby://localhost:1527/XYZ_Assoc");
+            boolean success = true;
             try (PreparedStatement prepStatement = connection.prepareStatement("UPDATE MEMBERS SET \"status\" = ? WHERE \"id\" = ?")) {
                 prepStatement.setString(1, status);
                 prepStatement.setString(2, id);
-                return prepStatement.executeUpdate() > 0;
+                success = success && prepStatement.executeUpdate() > 0;
             }
+            try (PreparedStatement prepStatement = connection.prepareStatement("UPDATE USERS SET \"status\" = ? WHERE \"id\" = ?")) {
+                prepStatement.setString(1, status);
+                prepStatement.setString(2, id);
+                success = success && prepStatement.executeUpdate() > 0;
+            }
+            return success;
         } catch (ClassNotFoundException | SQLException ex) {
             return false;
         }
